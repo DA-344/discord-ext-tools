@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='discord-ext-tools',
     version='1.0.0',
-    packages=['discord'],
+    packages=['discord.ext.tools'],
     url='https://github.com/Developer-Anony/discord-ext-tools',
     license='MIT',
     author='Dev Anony',

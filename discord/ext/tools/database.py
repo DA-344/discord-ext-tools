@@ -82,6 +82,7 @@ class DataBase:
     from discord.ext.commands import Bot
     from discord.ext.tools import DataBase
 
+    # EXAMPLE USING THE ext.commands BOT
     # Create a Bot instance
     bot = Bot(...)
 
@@ -95,6 +96,14 @@ class DataBase:
     bot.database = database
 
     # Now, we can access the database connection wherever we want.
+
+    # EXAMPLE USING THE ext.tools BOT
+    from discord.ext.tools import Bot, DataBase
+
+    bot = Bot(..., database=DataBase(...))
+
+    bot.run(TOKEN)
+    # This runs both the bot and the connection to the DB
     ```
     """
     
@@ -145,8 +154,8 @@ class Bot(BotBase):
 
     db = database
 
-    async def run(self, token: str, *, reconnect: bool = True, log_handler: logging.Handler | None = ..., log_formatter: logging.Formatter = ..., log_level: int = ..., root_logger: bool = False) -> None:
+    def run(self, token: str, *, reconnect: bool = True, log_handler: logging.Handler | None = ..., log_formatter: logging.Formatter = ..., log_level: int = ..., root_logger: bool = False) -> None:
         t1 = asyncio.create_task(self.db.connect())
         t2 = asyncio.create_task(super().run(token, reconnect=reconnect, log_handler=log_handler, log_formatter=log_formatter, log_level=log_level, root_logger=root_logger))
 
-        await asyncio.gather(t1, t2)
+        asyncio.run(asyncio.gather(t1, t2))

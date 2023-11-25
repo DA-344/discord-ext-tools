@@ -33,11 +33,11 @@ def cooldown(rate: int, per: float, *, bucket: BucketType = BucketType.member, b
     per: int
         The amount of seconds to wait for a cooldown when it's been triggered
     bucket: :class:`.BucketType`
-        The type of cooldown to have.
+        The type of cooldown to have. Defaults to member.
     
     Keyword parameters
     ------------------
-    bypass_owners: bool
+    bypass_owners: :class:`bool`
         If the cooldown should bypass owners.
     has_any_role: Optional[List[:class:`.Role`]]
         If the cooldown should bypass users WITH ANY of this roles.
@@ -45,10 +45,10 @@ def cooldown(rate: int, per: float, *, bucket: BucketType = BucketType.member, b
         If the cooldown should bypass users THAT DOESN'T HAVE ANY of this roles.
     bypass_channels: Optional[List[:class:`int`]]
         A list of channel IDs where the cooldown doesn't apply. This cannot be done in non-guild contexts.
-    bypass_in_dms: bool
+    bypass_in_dms: :class:`bool`
         If the cooldown shouldn't be applied when command is invoked outside a guild. If this is `True`
         while :param:`bypass_in_guilds` is `True`, then no cooldown is applied for this command.
-    bypass_in_guilds: bool
+    bypass_in_guilds: :class:`bool`
         If the cooldown shouldn't be applied when command is invoked in guilds. If this is `True`
         while :param:`bypass_in_dms` is `True`, then no cooldown is applied for this command.
     """

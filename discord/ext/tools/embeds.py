@@ -1,6 +1,7 @@
 """
 discord.ext.tools.embeds
 ~~~~~~~~~~~~~~~~~~~~~~~~
+
 Tools for embeds and some parsers to create embeds a user-friendly way.
 """
 from __future__ import annotations

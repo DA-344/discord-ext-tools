@@ -12,13 +12,8 @@ __license__: str = "MIT"
 __copyright__: str = "(c) Developer-Anony // 2023"
 __version__: str = "1.0.0"
 
-__all__: __t__[str] = (
-    'Embed',
-    'cooldown',
-    'DataBase',
-    'Bot'
-)
+__all__: __t__[str] = ("Embed", "cooldown", "Context")
 
 from .embeds import Embed
 from .cooldowns import cooldown
-from .database import DataBase, Bot
+from .context import Context

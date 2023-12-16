@@ -17,9 +17,6 @@ class Embed(discord.Embed):
     To initialize this, it is the same way as a normal embed.
     """
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-
     @classmethod
     def from_message(cls, message: discord.Message) -> Embed:
         """
@@ -56,11 +53,16 @@ class Embed(discord.Embed):
 
         clean_content = message.content
 
+        if clean_content == "":
+            raise ValueError("cannot initialize an embed by an empty message")
+
         if "\n" in clean_content:
             contents: List[str] = clean_content.splitlines(keepends=False)
 
         else:
-            contents: List[str] = [clean_content,]
+            contents: List[str] = [
+                clean_content,
+            ]
 
         done_lines: List[int] = []
         embed: cls = cls()
@@ -72,9 +74,9 @@ class Embed(discord.Embed):
                 embed.description = line
 
             else:
-                if all((index not in done_lines, index+1 not in done_lines)):
-                    embed.add_field(name=line, value=contents[index+1])
-                    done_lines.append(index); done_lines.append(index+1)
+                if index not in done_lines and index + 1 not in done_lines:
+                    embed.add_field(name=line, value=contents[index + 1])
+                    done_lines.extend([index, index + 1])
                     # NOTE: This appends the done lines index so no lines, even value, are
                     # repeated.
 

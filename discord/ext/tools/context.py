@@ -37,7 +37,7 @@ class Context(ContextBase):
         current_parameter: Optional[Parameter] = None,
         current_argument: Optional[str] = None,
         interaction: Interaction = None,
-    ):
+    ) -> None:
         super().__init__(
             message=message,
             bot=bot,

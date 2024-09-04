@@ -9,7 +9,7 @@ commands or application commands.
 
 ### Documentation
 
-The documentation is available in the [wiki](<add URL here - soon™>)
+The documentation is available in the [wiki](https://github.com/DA-344/discord-ext-tools/wiki).
 
 ### Contributing
 

@@ -75,7 +75,7 @@ def has_skus(*sku_ids: Union[int, str, Snowflake]):
     return check(predicate)
 
 
-def max_concurrency(number: int, per: BucketType = BucketType.default, *, wait: bool = False):
+def max_concurrency(number: int, per: BucketType = BucketType.default):
     """A decorator that adds a maximum concurrency to a :class:`discord.app_commands.Command` or its subclasses.
 
     This enabled you to only allow a certain number of command invocations at the same time,
@@ -85,6 +85,9 @@ def max_concurrency(number: int, per: BucketType = BucketType.default, *, wait: 
 
     This is the application command variant, for prefixed commands see :func:`discord.ext.commands.max_concurrency`.
 
+    Unlike :func:`discord.ext.commands.max_concurrency`, this decorator cannot wait for the commands to finish because
+    of the 3 seconds limit to respond to an interaction.
+
     Parameters
     ----------
     number: :class:`int`
@@ -92,14 +95,9 @@ def max_concurrency(number: int, per: BucketType = BucketType.default, *, wait: 
     per: :class:`.BucketType`
         The bucket that this concurrency is based on, e.g. :attr:`BucketType.guild` would allow
         it to be used up to ``number`` times per guild.
-    wait: :class:`bool`
-        Whether the command should wait for the queue to be over. If this is set to ``False``
-        then instead of waiting until the command can run again, the command raises
-        :exc:`.MaxConcurrencyReached` to its error handler. If this is set to ``True``
-        then the command waits until it can be executed.
     """
 
-    obj = MaxConcurrency(number, per=per, wait=wait)
+    obj = MaxConcurrency(number, per=per)
 
     async def predicate(interaction: Interaction[Any]) -> bool:
         await obj.acquire(interaction)

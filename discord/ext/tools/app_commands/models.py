@@ -46,15 +46,13 @@ class MaxConcurrency:
     __slots__ = (
         'number',
         'per',
-        'wait',
         '_mapping',
     )
 
-    def __init__(self, number: int, *, per: BucketType, wait: bool) -> None:
+    def __init__(self, number: int, *, per: BucketType) -> None:
         self._mapping: Dict[Any, Semaphore] = {}
         self.per: BucketType = per
         self.number: int = number
-        self.wait: bool = wait
 
         if number <= 0:
             raise ValueError(
@@ -67,10 +65,10 @@ class MaxConcurrency:
             )
 
     def copy(self) -> Self:
-        return self.__class__(self.number, per=self.per, wait=self.wait)
+        return self.__class__(self.number, per=self.per)
 
     def __repr__(self) -> str:
-        return f'<MaxConcurrency per={self.per!r} number={self.number} wait={self.wait}>'
+        return f'<MaxConcurrency per={self.per!r} number={self.number}>'
 
     def get_key(self, interaction: Interaction[Any]) -> Any:
         return self.per.get_key(interaction)
@@ -83,7 +81,7 @@ class MaxConcurrency:
         except KeyError:
             self._mapping[key] = sem = Semaphore(self.number)
 
-        acquired = await sem.acquire(wait=self.wait)
+        acquired = await sem.acquire(wait=False)
         if not acquired:
             raise MaxConcurrencyReached(self.number, self.per)
 

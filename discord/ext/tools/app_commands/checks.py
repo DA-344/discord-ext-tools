@@ -25,12 +25,13 @@ from __future__ import annotations
 
 from typing import Union, Any
 
-from discord import Object, Interaction
+from discord import Interaction
 from discord.abc import Snowflake
 from discord.app_commands.checks import check
-from discord.ext.commands import BucketType
 
 from .errors import MissingSKU
+from .enums import BucketType
+from .models import MaxConcurrency
 from ..models import MaxUsages
 
 __all__ = (
@@ -70,5 +71,40 @@ def has_skus(*sku_ids: Union[int, str, Snowflake]):
             for esi in entitlements_sku_ids
         ):
             raise MissingSKU(list(sku_ids))
+        return True
+    return check(predicate)
+
+
+def max_concurrency(number: int, per: BucketType = BucketType.default, *, wait: bool = False):
+    """A decorator that adds a maximum concurrency to a :class:`discord.app_commands.Command` or its subclasses.
+
+    This enabled you to only allow a certain number of command invocations at the same time,
+    for example if a command takes too long or if only one user can use it at a time. This
+    differs from a cooldown in that there is no set waiting period or token bucket -- only
+    a set number of people can run the command.
+
+    This is the application command variant, for prefixed commands see :func:`discord.ext.commands.max_concurrency`.
+
+    Parameters
+    ----------
+    number: :class:`int`
+        The maximum number of concurrent invocations.
+    per: :class:`.BucketType`
+        The bucket that this concurrency is based on, e.g. :attr:`BucketType.guild` would allow
+        it to be used up to ``number`` times per guild.
+    wait: :class:`bool`
+        Whether the command should wait for the queue to be over. If this is set to ``False``
+        then instead of waiting until the command can run again, the command raises
+        :exc:`.MaxConcurrencyReached` to its error handler. If this is set to ``True``
+        then the command waits until it can be executed.
+    """
+
+    obj = MaxConcurrency(number, per=per, wait=wait)
+
+    async def predicate(interaction: Interaction[Any]) -> bool:
+        await obj.acquire(interaction)
+        await obj.release(interaction)
+        # If it does not error in obj.acquire then it has not reached the
+        # max concurrency yet. So return a True.
         return True
     return check(predicate)

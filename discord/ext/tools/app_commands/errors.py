@@ -23,14 +23,18 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Any, List, Union
+from typing import Any, List, Union, TYPE_CHECKING
 
 from discord.utils import _human_join as human_join
 from discord.abc import Snowflake
 from discord.app_commands import CheckFailure
 
+if TYPE_CHECKING:
+    from .enums import BucketType
+
 __all__ = (
     'MissingSKU',
+    'MaxConcurrencyReached',
 )
 
 
@@ -50,4 +54,28 @@ class MissingSKU(CheckFailure):
         super().__init__(
             f'You are missing {fmt} SKU to run this command.',
             *args,
+        )
+
+
+class MaxConcurrencyReached(CheckFailure):
+    """An exception raised when a command has reached its max concurrency.
+
+    Attributes
+    ----------
+    number: :class:`int`
+        The maximum number of concurrent invokers allowed.
+    per: :class:`.BucketType`
+        The bucket type passed to the :func:`.max_concurrency` decorator.
+    """
+
+    def __init__(self, number: int, per: BucketType) -> None:
+        # MIT License (c) 2015 - present Rapptz
+        self.number: int = number
+        self.per: BucketType = per
+        name = per.name
+        suffix = 'per %s' % name if per.name != 'default' else 'globally'
+        plural = '%s times %s' if number > 1 else '%s time %s'
+        fmt = plural % (number, suffix)
+        super().__init__(
+            f'Too many people are using this command. It can only be used {fmt} concurrently.'
         )

@@ -23,12 +23,17 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Dict, Any, Union, Literal, Coroutine
+from typing import Dict, Any, Union, Literal, Coroutine, TYPE_CHECKING
 
-from discord import Message, Interaction
-from discord.ext.commands import BucketType, Context
+from discord import Interaction
+from discord.ext.commands import BucketType as ExtBucketType, Context
 
 from .errors import MaxUsagesReached
+
+if TYPE_CHECKING:
+    from .app_commands.enums import BucketType as AppBucketType
+
+    BucketType = Union[ExtBucketType, AppBucketType]
 
 __all__ = (
     'MaxUsages',
@@ -44,7 +49,7 @@ class MaxUsages:
     ----------
     limit: :class:`int`
         The usages limit that are allowed before raising :exc:`MaxUsagesReached`.
-    bucket: :class:`discord.ext.commands.BucketType`
+    bucket: Union[:class:`discord.ext.commands.BucketType`, :class:`.BucketType`]
         The bucket in which the usages are restricted by.
     **options
         Other options to use in the initialization of the check.
@@ -57,10 +62,7 @@ class MaxUsages:
         self._data: Dict[Any, int] = {}
 
     async def check_usage(self, context: Union[Context[Any], Interaction[Any]]) -> Literal[True]:
-        if isinstance(context, Interaction):
-            context = await Context.from_interaction(context)
-
-        key = self.get_bucket(context.message)
+        key = self.get_bucket(context)
 
         if key in self._data:
             usages = self._data[key]
@@ -81,5 +83,5 @@ class MaxUsages:
     def __call__(self, context: Union[Context[Any], Interaction[Any]]) -> Coroutine[Any, Any, Literal[True]]:
         return self.check_usage(context)
 
-    def get_bucket(self, message: Message) -> Any:
-        return self.bucket.get_key(message)
+    def get_bucket(self, context: Union[Context[Any], Interaction[Any]]) -> Any:
+        return self.bucket.get_key(context)

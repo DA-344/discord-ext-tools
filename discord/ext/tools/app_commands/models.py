@@ -40,6 +40,15 @@ __all__ = (
 
 
 class MaxConcurrency:
+    """Represents a maximum concurrency object for application commands.
+
+    Attributes
+    ----------
+    number: :class:`int`
+        The number of times allowed for the command to be executed concurrently.
+    per: :class:`.BucketType`
+        The bucket to use for this max concurrency object.
+    """
     # Similar copy from discord.py's max_concurrency object
     # MIT License (c) 2015 - present Rapptz
 

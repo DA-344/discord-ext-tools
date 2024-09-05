@@ -37,6 +37,7 @@ from ..models import MaxUsages
 __all__ = (
     'max_usages',
     'has_skus',
+    'max_concurrency',
 )
 
 

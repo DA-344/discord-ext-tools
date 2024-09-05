@@ -43,16 +43,18 @@ __all__ = (
 class MaxUsages:
     """Represents a maximum usages object.
 
-    This is not meant to be constructed manually but rather built by :func:`max_usages`.
+    This is not meant to be constructed manually but rather built by :func:`.max_usages`.
 
-    Parameters
+    Attributes
     ----------
     limit: :class:`int`
         The usages limit that are allowed before raising :exc:`MaxUsagesReached`.
     bucket: Union[:class:`discord.ext.commands.BucketType`, :class:`.BucketType`]
         The bucket in which the usages are restricted by.
-    **options
-        Other options to use in the initialization of the check.
+    hide_after_limit: :class:`bool`
+        Whether to set the ``hidden`` attribute to ``True`` when the limit is reached.
+    disable_after_limit: :class:`bool`
+        Whether to set the ``enabled`` attribute to ``False`` when the limit is reached.
     """
     def __init__(self, limit: int, bucket: BucketType, **options: Any) -> None:
         self.limit: int = limit

@@ -7,5 +7,8 @@ tools.
 Manuals
 -------
 
-- :doc:`api/index.rst` - API Reference
-- :doc:`interactions/index.rst` - Interactions API Reference
+.. toctree::
+    :maxdepth: 1
+
+    api/index
+    interactions/index

@@ -1,7 +1,7 @@
-.. currentmodule:: discord.ext.tools.app_commands
+.. currentmodule:: discord_tools.app_commands
 
-API Reference
-=============
+Interactions API Reference
+==========================
 
 This section outlines all the available tools for interaction based commands (application commands, UI kit, etc.)
 
@@ -24,6 +24,7 @@ BucketType
 .. attributetable:: BucketType
 
 .. autoclass:: BucketType
+    :members:
 
 
 Exceptions
@@ -31,7 +32,7 @@ Exceptions
 
 .. exception_hierarchy::
 
-    - :dpy:`app_commands.CheckFailure`
+    - :exc:`~discord.app_commands.CheckFailure`
         - :exc:`MissingSKU`
         - :exc:`MaxConcurrencyReached`
 

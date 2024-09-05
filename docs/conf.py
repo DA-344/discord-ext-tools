@@ -2,7 +2,6 @@ import os
 import sys
 from importlib.metadata import version as get_version
 
-
 # Any extensions or modules to document with autodoc in other directories
 # must be added to sys.path here. If they are relative to this directory
 # use os.path.abspath as shown here.
@@ -64,7 +63,7 @@ project = "discord-ext-tools"
 copyright = "2024-present, DA344"
 
 # Full Version
-release = get_version("discord-ext-tools")
+release = get_version("discord.py-tools")
 # X.Y version
 version = ".".join(release.split(".")[:2])
 

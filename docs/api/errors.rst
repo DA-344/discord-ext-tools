@@ -1,4 +1,4 @@
-.. currentmodule:: discord.ext.tools
+.. currentmodule:: discord_tools
 
 Exceptions
 ==========
@@ -8,12 +8,12 @@ Exception Hierarchy
 
 .. exception_hierarchy::
 
-    - :dpy:`commands.CheckFailure`
-        - :exc:`.MaxUsagesReached`
-        - :exc:`.NotInValidGuild`
-        - :exc:`.MissingAnyPermissions`
-        - :exc:`.MissingAttachments`
-        - :exc:`.NoVoiceState`
+    - :exc:`~discord.ext.commands.CheckFailure`
+        - :exc:`MaxUsagesReached`
+        - :exc:`NotInValidGuild`
+        - :exc:`MissingAnyPermissions`
+        - :exc:`MissingAttachments`
+        - :exc:`NoVoiceState`
 
 
 Objects
@@ -21,17 +21,17 @@ Objects
 
 The following exceptions are thrown by the library.
 
-.. autoexception:: MaxUsagesReached()
+.. autoexception:: MaxUsagesReached
     :members:
 
-.. autoexception:: NotInValidGuild()
+.. autoexception:: NotInValidGuild
     :members:
 
-.. autoexception:: MissingAnyPermissions()
+.. autoexception:: MissingAnyPermissions
     :members:
 
-.. autoexception:: MissingAttachments()
+.. autoexception:: MissingAttachments
     :members:
 
-.. autoexception:: NoVoiceState()
+.. autoexception:: NoVoiceState
     :members:

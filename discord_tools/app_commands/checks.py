@@ -48,7 +48,7 @@ def max_usages(limit: int, bucket: BucketType):
     ----------
     limit: :class:`int`
         The amount of allowed usages before the command is no longer usable.
-    bucket: :class:`discord.ext.commands.BucketType`
+    bucket: :class:`BucketType`
         The bucket in which the usages are restricted by.
     """
     return check(MaxUsages(limit, bucket))

@@ -1,4 +1,4 @@
-.. currentmodule:: discord.ext.tools
+.. currentmodule:: discord_tools
 
 Checks
 ======

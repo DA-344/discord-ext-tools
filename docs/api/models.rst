@@ -1,4 +1,4 @@
-.. currentmodule:: discord.ext.tools
+.. currentmodule:: discord_tools
 .. _models:
 
 Models
@@ -15,8 +15,6 @@ to be constructed by users.
 
 MaxUsages
 ~~~~~~~~~
-
-.. attributetable:: MaxUsages
 
 .. autoclass:: MaxUsages()
     :members:

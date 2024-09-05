@@ -36,12 +36,13 @@ __all__ = (
 class BucketType(Enum):
     """Specifies a type of bucket for, e.g. a cooldown.
 
-    This works in a similar way as :attr:`discord.ext.commands.BucketType`, but designed
+    This works in a similar way as :class:`discord.ext.commands.BucketType`, but designed
     for interactions.
 
     To pass a BucketType to a application commands cooldown you must do the following:
 
     .. code-block:: python3
+
         @app_commands.command(...)
         @app_commands.checks.cooldown(rate, per, key=BucketType.default)  # Change the bucket type as desired
         async def my_command(...):

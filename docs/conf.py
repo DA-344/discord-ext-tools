@@ -116,7 +116,7 @@ base_colors = {
 }
 
 html_theme_options = {
-    "source_repository": "https://github.com/Pycord-Development/pycord",
+    "source_repository": "https://github.com/DA-344/discord-ext-tools",
     "source_branch": "master",
     "source_directory": "docs/",
     "light_css_variables": {

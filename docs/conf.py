@@ -59,7 +59,7 @@ source_suffix = {
 master_doc = "index"
 
 # General information about the project
-project = "discord-ext-tools"
+project = "discord-tools"
 copyright = "2024-present, DA344"
 
 # Full Version
@@ -164,14 +164,14 @@ htmlhelp_basename = "dpy-ext-tools-doc"
 
 latex_elements = {}
 latex_documents = [
-    ('index', 'discord-ext-tools.text', 'discord-ext-tools Documentation',
+    ('index', 'discord-tools.tex', 'discord-tools Documentation',
      'DA344', 'manual'),
 ]
 man_pages = [
-    ('index', 'discord-ext-tools', 'discord-ext-tools Documentation',
+    ('index', 'discord-tools', 'discord-tools Documentation',
      ['DA344'], 1)
 ]
 texinfo_documents = [
-    ('index', 'discord-ext-tools', 'discord-ext-tools Documentation',
-     'DA344', 'discord-ext-tools', 'One line description of project.', 'Miscellaneous',),
+    ('index', 'discord-tools', 'discord-tools Documentation',
+     'DA344', 'discord-tools', 'One line description of project.', 'Miscellaneous',),
 ]

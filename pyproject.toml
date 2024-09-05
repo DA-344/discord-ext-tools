@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "discord-ext-tools"
+name = "discord.py-tools"
 description = "Simple tools for discord.py"
 readme = { file = "README.md", content-type = "text/markdown" }
 license = { file = "LICENSE" }
@@ -45,8 +45,8 @@ docs = [
 
 [tool.setuptools]
 packages = [
-    "discord.ext.tools",
-    "discord.ext.tools.app_commands",
-    # "discord.ext.tools.app_commands.i18n" - future addition
+    "discord_tools",
+    "discord_tools.app_commands",
+    # "discord_tools.app_commands.i18n" - future addition
 ]
 include-package-data = true

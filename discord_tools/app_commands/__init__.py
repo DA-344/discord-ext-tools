@@ -1,5 +1,5 @@
 """
-discord.ext.tools.app_commands
+discord_tools.app_commands
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Tools for application commands.

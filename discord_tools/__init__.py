@@ -8,7 +8,7 @@ Miscellaneous tools for discord.py.
 __author__ = "DA344"
 __license__ = "MIT"
 __copyright__ = "(c) 2024 present, DA344"
-__version__ = "0.1.0a"
+__version__ = "0.1.0"
 
 
 from .models import *

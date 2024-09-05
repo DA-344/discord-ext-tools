@@ -28,13 +28,12 @@ extensions = [
     "sphinx_autodoc_typehints",
 ]
 
-always_document_param_types = True
+always_document_param_types = False
 toc_object_entries_show_parents = "hide"
 autosectionlabel_prefix_document = True
 
 autodoc_member_order = "bysource"
 autodoc_typehints = "none"
-napoleon_attr_annotations = True
 
 extlinks = {
     "issue": ("https://github.com/DA-344/discord-ext-tools/issues/%s", "GH-%s"),
@@ -85,6 +84,8 @@ html_title = f"{project} v{version} Documentation"
 language = "en"
 
 exclude_patterns = ["_build", "node_modules", "build"]
+
+pygments_style = "friendly"
 
 html_experimental_html5_writer = True
 html_theme = "furo"

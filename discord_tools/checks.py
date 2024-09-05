@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Any, Union, TYPE_CHECKING
+from typing import Any, Union
 
 from discord import Permissions, Member
 from discord.utils import MISSING
@@ -33,11 +33,9 @@ from discord.ext.commands import BucketType, Context, check
 from .models import MaxUsages
 from .errors import NotInValidGuild, MissingAnyPermissions, MissingAttachments, NoVoiceState
 
-if TYPE_CHECKING:
-    from discord.ext.commands._types import Check
-
 __all__ = (
     'max_usages',
+    'guilds',
     'has_any_permissions',
     'has_attachments',
     'has_voice_state',
@@ -50,11 +48,11 @@ def max_usages(
     *,
     hide_after_limit: bool = False,
     disable_after_limit: bool = False,
-) -> Check[Context[Any]]:
+):
     """A decorator that adds a limit of usages to a command.
 
     This decorator is for prefixed commands only, for an application commands
-    version see :func:`tools.app_commands.max_usages`.
+    version see :func:`~.app_commands.max_usages`.
 
     Parameters
     ----------
@@ -66,7 +64,7 @@ def max_usages(
         Whether to set the :attr:`discord.ext.commands.Command.hidden` attribute to ``True`` after the limit is
         exhausted. Defaults to ``False``. Only allowed if ``bucket`` is :attr:`discord.ext.commands.BucketType.default`.
     disable_after_limit: :class:`bool`
-        Whether to set the :attr:`discord.ext.commands.Command.disabled` attribute to ``True`` after the limit is
+        Whether to set the :attr:`discord.ext.commands.Command.enabled` attribute to ``False`` after the limit is
         exhausted. Defaults to ``False``. Only allowed if ``bucket`` is :attr:`discord.ext.commands.BucketType.default`.
     """
     return check(
@@ -79,7 +77,7 @@ def max_usages(
     )
 
 
-def guilds(*guild_ids: Union[Snowflake, int]) -> Check[Context[Any]]:
+def guilds(*guild_ids: Union[Snowflake, int]):
     """A decorator that adds a guild checks to a command.
 
     This makes the command only available in the provided guilds.
@@ -89,7 +87,7 @@ def guilds(*guild_ids: Union[Snowflake, int]) -> Check[Context[Any]]:
 
     Parameters
     ----------
-    *guilds
+    *guild_ids: Union[:class:`discord.abc.Snowflake`, :class:`int`]
         The guilds to limit the command to.
     """
     guild_ids = [guild.id if isinstance(guild, Snowflake) else guild for guild in guild_ids]
@@ -103,7 +101,7 @@ def guilds(*guild_ids: Union[Snowflake, int]) -> Check[Context[Any]]:
     return check(predicate)
 
 
-def has_any_permissions(**perms: bool) -> Check[Context[Any]]:
+def has_any_permissions(**perms: bool):
     """A decorator that adds a permissions check.
 
     Unlike :func:`discord.ext.commands.has_permissions`, :func:`discord.ext.commands.has_guild_permissions` this checks
@@ -131,7 +129,7 @@ def has_any_permissions(**perms: bool) -> Check[Context[Any]]:
     return check(predicate)
 
 
-def has_attachments(*, count: int = MISSING) -> Check[Context[Any]]:
+def has_attachments(*, count: int = MISSING):
     """A decorator that checks if the invoker message has any attachments.
 
     Parameters
@@ -153,7 +151,7 @@ def has_attachments(*, count: int = MISSING) -> Check[Context[Any]]:
     return check(predicate)
 
 
-def has_voice_state() -> Check[Context[Any]]:
+def has_voice_state():
     """A decorator that checks if the command invoker has a voice state (is in a voice channel).
     """
 

@@ -45,7 +45,7 @@ class MissingSKU(CheckFailure):
     ----------
     skus: List[Union[:class:`discord.abc.Snowflake`, :class:`str`, :class:`int`]]
         The SKUs that are missing.
-        These are the same as the ones provided in :class:`.has_skus`.
+        These are the same as the ones provided in :func:`.has_skus`.
     """
 
     def __init__(self, skus: List[Union[Snowflake, str, int]], *args: Any) -> None:

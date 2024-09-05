@@ -16,6 +16,8 @@ to be constructed by users.
 MaxUsages
 ~~~~~~~~~
 
+.. attributetable:: MaxUsages
+
 .. autoclass:: MaxUsages()
     :members:
 

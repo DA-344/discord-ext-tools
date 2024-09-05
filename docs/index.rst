@@ -1,7 +1,7 @@
-Welcome to discord-ext-tools
-============================
+Welcome to discord-tools
+========================
 
-discord-ext-tools is a simple extension for discord.py that adds various
+discord-tools is a simple extension for discord.py that adds various
 tools.
 
 Manuals

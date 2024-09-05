@@ -69,7 +69,7 @@ version = ".".join(release.split(".")[:2])
 
 
 # This assumes a tag is available for final releases
-master_tags = ("a", "b", "rc", "dev")
+master_tags = ("a", "b", "rc")
 branch = (
     "master"
     if any(tag in version for tag in master_tags) else

@@ -75,7 +75,7 @@ class MaxUsages:
             self._data[key] += 1
             return True
 
-        if self.bucket is BucketType.default:
+        if self.bucket.name == 'default':
             if self.hide_after_limit is True:
                 context.command.hidden = True
             if self.disable_after_limit is True:

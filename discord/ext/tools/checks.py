@@ -23,16 +23,18 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Any, Union
+from typing import Any, Union, TYPE_CHECKING
 
 from discord import Permissions, Member
 from discord.utils import MISSING
 from discord.abc import Snowflake
-from discord.ext.commands.core import Check
 from discord.ext.commands import BucketType, Context, check
 
 from .models import MaxUsages
 from .errors import NotInValidGuild, MissingAnyPermissions, MissingAttachments, NoVoiceState
+
+if TYPE_CHECKING:
+    from discord.ext.commands._types import Check
 
 __all__ = (
     'max_usages',

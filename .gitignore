@@ -5,3 +5,5 @@
 venv
 .venv
 docs/_build
+.idea
+build

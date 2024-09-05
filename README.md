@@ -9,7 +9,7 @@ commands or application commands.
 
 ### Documentation
 
-The documentation is available in the [here](https://discord-tools.readthedocs.io/en/).
+The documentation is available [here](https://discord-tools.readthedocs.io/en/).
 
 ### Contributing
 

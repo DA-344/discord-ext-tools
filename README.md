@@ -1,5 +1,5 @@
-discord.ext.tools
------------------
+discord_tools
+-------------
 
 Simple tools for discord.py
 

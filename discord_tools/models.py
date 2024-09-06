@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Dict, Any, Union, Literal, Coroutine, TYPE_CHECKING
+from typing import Any, Union, Literal, Coroutine, TYPE_CHECKING
 
 from discord import Interaction
 from discord.ext.commands import BucketType as ExtBucketType, Context
@@ -52,16 +52,25 @@ class MaxUsages:
     bucket: Union[:class:`discord.ext.commands.BucketType`, :class:`.BucketType`]
         The bucket in which the usages are restricted by.
     hide_after_limit: :class:`bool`
-        Whether to set the ``hidden`` attribute to ``True`` when the limit is reached.
+        Whether to set the :attr:`discord.ext.commands.Command.hidden` attribute to ``True`` when the limit is reached.
     disable_after_limit: :class:`bool`
-        Whether to set the ``enabled`` attribute to ``False`` when the limit is reached.
+        Whether to set the :attr:`discord.ext.commands.Command.enabled` attribute to ``False`` when the limit is reached.
     """
+
+    __slots__ = (
+        'limit',
+        'bucket',
+        'hide_after_limit',
+        'disable_after_limit',
+        '_data',
+    )
+
     def __init__(self, limit: int, bucket: BucketType, **options: Any) -> None:
         self.limit: int = limit
         self.bucket: BucketType = bucket
         self.hide_after_limit: bool = options.pop('hide_after_limit', False)
         self.disable_after_limit: bool = options.pop('disable_after_limit', False)
-        self._data: Dict[Any, int] = {}
+        self._data: dict[Any, int] = {}
 
     async def check_usage(self, context: Union[Context[Any], Interaction[Any]]) -> Literal[True]:
         key = self.get_bucket(context)

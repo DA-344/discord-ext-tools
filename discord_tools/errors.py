@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Any, List
+from typing import Any
 
 from discord import Guild, Member
 from discord.utils import _human_join as human_join
@@ -79,8 +79,8 @@ class MissingAnyPermissions(CheckFailure):
         The permissions that the invoker is missing.
     """
 
-    def __init__(self, missing_permissions: List[str], *args: Any) -> None:
-        self.missing_permissions: List[str] = missing_permissions
+    def __init__(self, missing_permissions: list[str], *args: Any) -> None:
+        self.missing_permissions: list[str] = missing_permissions
 
         missing = [perm.replace('_', ' ').replace('guild', 'server').title() for perm in missing_permissions]
 

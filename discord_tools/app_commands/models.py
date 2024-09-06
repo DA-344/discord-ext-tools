@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Dict, Any, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 from discord import Interaction
 from discord.ext.commands.cooldowns import _Semaphore as Semaphore
@@ -59,7 +59,7 @@ class MaxConcurrency:
     )
 
     def __init__(self, number: int, *, per: BucketType) -> None:
-        self._mapping: Dict[Any, Semaphore] = {}
+        self._mapping: dict[Any, Semaphore] = {}
         self.per: BucketType = per
         self.number: int = number
 

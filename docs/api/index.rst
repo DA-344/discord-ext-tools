@@ -3,7 +3,7 @@
 API Reference
 =============
 
-The following section outlines the API of discord-ext-tools.
+The following section outlines the API of discord-tools.
 
 
 .. toctree::

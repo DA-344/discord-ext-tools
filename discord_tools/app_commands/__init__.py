@@ -10,3 +10,4 @@ from .errors import *
 from .enums import *
 from .models import *
 from .context_menu import *
+from . import i18n

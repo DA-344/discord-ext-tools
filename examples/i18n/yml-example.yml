@@ -1,0 +1,11 @@
+en-US:
+  commands.echo.name:
+    echo
+  commands.echo.description:
+    Echoes your text
+
+es-ES:
+  commands.echo.name:
+    eco
+  commands.echo.description:
+    Repite tu texto

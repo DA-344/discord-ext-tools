@@ -1,9 +1,11 @@
 """
-discord.ext.tools.app_commands.i18n
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+discord_tools.app_commands.i18n
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A submodule that adds helpers for I18N translations.
+Translator tools for app_commands
 """
 
-from .client import *
+# All the code in the translator.py file is not written here
+# for future additions.
+
 from .translator import *

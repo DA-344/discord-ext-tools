@@ -1,0 +1,17 @@
+.. currentmodule:: discord_tools.app_commands.i18n
+
+I18N Translations
+=================
+
+``discord_tools`` provides localization tools. This section outlines everything
+about it.
+
+
+Translator
+~~~~~~~~~~
+
+.. attributetable:: Translator
+
+.. autoclass:: Translator
+    :members:
+    :exclude-members: translate

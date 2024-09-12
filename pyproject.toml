@@ -26,8 +26,11 @@ classifiers = [
 dynamic = ["version", "dependencies"]
 
 [project.optional-dependencies]
-i18n = [
-    "googletrans",
+po-i18n = [
+    "polib==1.2.0",
+]
+yaml-i18n = [
+    "pyyaml<7.0.0",
 ]
 docs = [
     "sphinx==8.0.2",
@@ -48,6 +51,6 @@ docs = [
 packages = [
     "discord_tools",
     "discord_tools.app_commands",
-    # "discord_tools.app_commands.i18n" - future addition
+    "discord_tools.app_commands.i18n",
 ]
 include-package-data = true

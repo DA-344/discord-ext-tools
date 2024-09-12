@@ -9,4 +9,3 @@ docs/_build
 build
 __pycache__/
 dist/
-private-tests/

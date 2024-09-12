@@ -63,12 +63,12 @@ class Translator(BaseTranslator):
         self._translations: dict[Locale, dict[str, str]] = {}
 
     def clear_translations(self) -> None:
-        """Clears all the commands names translations.
+        """Clears all the translations.
         """
         self._translations.clear()
 
     def update_translation(self, locale: Locale, data: dict[str, str]) -> dict[Locale, dict[str, str]]:
-        """Updates the command names locale translation strings.
+        """Updates a locale's translation strings.
 
         Parameters
         ----------
@@ -164,7 +164,7 @@ class Translator(BaseTranslator):
 
         Parameters
         ----------
-        path: Union[:class:`str`, :class:`os.PathLike`]
+        path: Union[:class:`int`, :class:`str`, :class:`bytes`, :class:`os.PathLike`]
             The path to the file to read.
         strategy: :class:`str`
             The strategy to use to load the translations, defaults to the file extension.
@@ -179,9 +179,9 @@ class Translator(BaseTranslator):
 
         if strategy is MISSING:
             if isinstance(path, str):
-                strategy = path.rstrip('.')[0]
+                strategy = path.split('.')[-1]
             elif isinstance(path, os.PathLike):
-                strategy = str(path).rstrip('.')[0]
+                strategy = str(path).split('.')[-1]
             elif isinstance(path, (int, bytes)):
                 raise ValueError(
                     'You must provide a strategy if using int or bytes paths',

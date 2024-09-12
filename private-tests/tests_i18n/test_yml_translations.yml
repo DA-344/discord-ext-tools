@@ -1,0 +1,8 @@
+en-GB:
+  commands_help_name: "help"
+  commands_help_description: "Shows the bot help (YML)"
+  responses.help.invoked: "Help invoked! Translation by: YML"
+es-ES:
+  commands_help_name: "ayuda"
+  commands_help_description: "Muestra la ayuda del bot (YML)"
+  responses.help.invoked: "¡Ayuda invocada! Traducción por: YML"

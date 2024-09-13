@@ -93,6 +93,7 @@ html_context = {}
 
 resource_links = {
     "issues": "https://github.com/DA-344/discord-ext-tools/issues",
+    "examples": "https://github.com/DA-344/discord-ext-tools/blob/master/examples"
 }
 
 base_colors = {

@@ -23,11 +23,18 @@ class CustomClient(discord.Client):
 
 
 client = CustomClient(...)
-client.translator.load_translations('translations.json')
+client.translator.load_translations('path/to/the/translations')
+# Example translations show how the structure of each file should be
+# .po and .mo files should be loaded independently and take the locale kwarg, this means, if you want to load
+# the 3 po example files you need to call "load_translations" 3 times.
+# There are no examples for .mo files as those are binary encoded .po files, and this library treats them
+# as the same.
 
 @client.tree.command(
-    name='commands.echo.name',
-    description='commands.echo.description',
+    name='commands_echo_name',
+    description='commands_echo_description',
+    # auto_locale_strings=True,  # If this is "True" then the name and description strings are not required to be
+                                 # wrapped around locale_str
 )
 async def echo(interaction: discord.Interaction, text: str) -> None:
     await interaction.response.send_message(text)

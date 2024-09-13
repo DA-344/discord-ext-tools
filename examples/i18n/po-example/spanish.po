@@ -1,0 +1,6 @@
+
+msgid "commands.echo.name"
+msgstr "eco"
+
+msgid "commands.echo.description"
+msgstr "Repite tu texto"

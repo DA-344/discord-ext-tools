@@ -1,11 +1,11 @@
 en-US:
-  commands.echo.name:
-    echo
-  commands.echo.description:
-    Echoes your text
+  commands_echo_name: "echo"
+  commands_echo_description: "Echoes your text"
 
 es-ES:
-  commands.echo.name:
-    eco
-  commands.echo.description:
-    Repite tu texto
+  commands_echo_name: "eco"
+  commands_echo_description: "Repite tu texto"
+
+fr:
+  commands_echo_name: "écho"
+  commands_echo_description: "Fait écho à votre texte"

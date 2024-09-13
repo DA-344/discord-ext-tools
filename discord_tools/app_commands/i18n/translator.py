@@ -52,7 +52,7 @@ class Translator(BaseTranslator):
 
     These translations are all merged, so unique translation keys are recommended.
 
-    Examples can be found in the repository's example folder.
+    Examples can be found in the :resource:`repository <examples>`.
     """
 
     def __init__(

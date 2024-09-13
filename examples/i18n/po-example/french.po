@@ -1,6 +1,6 @@
 
-msgid "commands.echo.name"
+msgid "commands_echo_name"
 msgstr "écho"
 
-msgid "commands.echo.description"
+msgid "commands_echo_description"
 msgstr "Fait écho à votre texte"

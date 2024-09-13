@@ -1,0 +1,14 @@
+{
+  "en-US": {
+    "commands_echo_name": "echo",
+    "commands_echo_description": "Echoes your text"
+  },
+  "es-ES": {
+    "commands_echo_name": "eco",
+    "commands_echo_description": "Repite tu texto"
+  },
+  "fr": {
+    "commands_echo_name": "écho",
+    "commands_echo_description": "Fait écho à votre texte"
+  }
+}

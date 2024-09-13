@@ -1,4 +1,4 @@
-# This example shows how to use the I18N feature with a JSON file.
+# This example shows how to use the I18N feature.
 
 import discord
 import discord_tools

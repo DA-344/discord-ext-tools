@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Any, Union, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 from discord.utils import _human_join as human_join
 from discord.abc import Snowflake
@@ -48,8 +48,8 @@ class MissingSKU(CheckFailure):
         These are the same as the ones provided in :func:`.has_skus`.
     """
 
-    def __init__(self, skus: list[Union[Snowflake, str, int]], *args: Any) -> None:
-        self.skus: list[Union[Snowflake, str, int]] = skus
+    def __init__(self, skus: list[Snowflake | str | int], *args: Any) -> None:
+        self.skus: list[Snowflake | str | int] = skus
         fmt = human_join(list(str(sku.id) if isinstance(sku, Snowflake) else sku for sku in skus), final="and")
         super().__init__(
             f'You are missing {fmt} SKU to run this command.',

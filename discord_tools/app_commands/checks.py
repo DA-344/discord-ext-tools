@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Union, Any
+from typing import Any
 
 from discord import Interaction
 from discord.abc import Snowflake
@@ -54,7 +54,7 @@ def max_usages(limit: int, bucket: BucketType):
     return check(MaxUsages(limit, bucket))
 
 
-def has_skus(*sku_ids: Union[int, str, Snowflake]):
+def has_skus(*sku_ids: int | str | Snowflake):
     """A decorator that checks if the interaction has all the provided skus.
 
     Parameters

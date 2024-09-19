@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import os
 import logging
-from typing import Optional, Union, Literal, TYPE_CHECKING
+from typing import Literal, TYPE_CHECKING
 
 from discord import Locale
 from discord.utils import MISSING
@@ -152,7 +152,7 @@ class Translator(BaseTranslator):
 
     def load_translations(
         self,
-        path: Union[int, str, bytes, os.PathLike[str], os.PathLike[bytes]],
+        path: int | str | bytes | os.PathLike[str] | os.PathLike[bytes],
         *,
         strategy: TranslationLoadStrategy = MISSING,
         locale: Locale = MISSING,
@@ -249,7 +249,7 @@ class Translator(BaseTranslator):
     def _save_po_data(self, data, locale: Locale) -> dict[Locale, dict[str, str]]:
         if TYPE_CHECKING:
             import polib
-            data: Union[polib.POFile, polib.MOFile]
+            data: polib.POFile | polib.MOFile
 
         entry_warns: list[str] = []
         translations: dict[str, str] = {}
@@ -270,7 +270,7 @@ class Translator(BaseTranslator):
         self._translations.update(resolved)
         return resolved
 
-    async def translate(self, string: locale_str, locale: Locale, context: TranslationContext) -> Optional[str]:
+    async def translate(self, string: locale_str, locale: Locale, context: TranslationContext) -> str | None:
         translations = self._translations.get(locale)
         if translations is None:
             return None  # discord.py handles this

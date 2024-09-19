@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Any, Union
+from typing import Any
 
 from discord import Permissions, Member
 from discord.utils import MISSING
@@ -77,7 +77,7 @@ def max_usages(
     )
 
 
-def guilds(*guild_ids: Union[Snowflake, int]):
+def guilds(*guild_ids: Snowflake | int):
     """A decorator that adds a guild checks to a command.
 
     This makes the command only available in the provided guilds.

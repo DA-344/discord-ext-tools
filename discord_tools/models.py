@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Any, Union, Literal, Coroutine, TYPE_CHECKING
+from typing import Any, Literal, Coroutine, TYPE_CHECKING, Union
 
 from discord import Interaction
 from discord.ext.commands import BucketType as ExtBucketType, Context
@@ -72,7 +72,7 @@ class MaxUsages:
         self.disable_after_limit: bool = options.pop('disable_after_limit', False)
         self._data: dict[Any, int] = {}
 
-    async def check_usage(self, context: Union[Context[Any], Interaction[Any]]) -> Literal[True]:
+    async def check_usage(self, context: Context[Any] | Interaction[Any]) -> Literal[True]:
         key = self.get_bucket(context)
 
         if key in self._data:
@@ -91,8 +91,8 @@ class MaxUsages:
                 context.command.enabled = False
         raise MaxUsagesReached(context.command, self.limit)
 
-    def __call__(self, context: Union[Context[Any], Interaction[Any]]) -> Coroutine[Any, Any, Literal[True]]:
+    def __call__(self, context: Context[Any] | Interaction[Any]) -> Coroutine[Any, Any, Literal[True]]:
         return self.check_usage(context)
 
-    def get_bucket(self, context: Union[Context[Any], Interaction[Any]]) -> Any:
+    def get_bucket(self, context: Context[Any] | Interaction[Any]) -> Any:
         return self.bucket.get_key(context)

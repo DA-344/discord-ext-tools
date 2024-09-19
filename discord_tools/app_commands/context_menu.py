@@ -56,7 +56,7 @@ class CogContextMenuHolder:
     def context_menu(
         cls,
         *,
-        name: Union[str, locale_str] = MISSING,
+        name: str | locale_str = MISSING,
         nsfw: bool = False,
         auto_locale_strings: bool = True,
         extras: dict[Any, Any] = MISSING,
@@ -91,7 +91,7 @@ class CogContextMenuHolder:
             'extras': extras,
         }
 
-        def wrapper(func: Callable[[CogT, Interaction[Any], Union[Message, User, Member]], Any]):
+        def wrapper(func: Callable[[CogT, Interaction[Any], Message | User | Member], Any]):
             func.__context_menu__ = True
             func.__context_menu_kwargs__ = kwargs
             return func

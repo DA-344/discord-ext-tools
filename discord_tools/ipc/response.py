@@ -39,6 +39,12 @@ __all__ = (
 class Request:
     """Represents an IPC request.
 
+    .. container:: operations
+
+        .. describe:: for ... in x
+
+            Iterates through all the request data keys.
+
     Attributes
     ----------
     endpoint: :class:`str`

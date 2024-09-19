@@ -39,6 +39,19 @@ __all__ = (
 
 class Route(Generic[R]):
     """Represents a server route.
+
+    .. container:: operations
+
+        .. describe:: str(x)
+
+            Returns this route name.
+
+    Attributes
+    ----------
+    name: :class:`str`
+        The route name, always prefixed with ``/``.
+    callback: Callable[..., Coroutine[Any, Any, Any]]
+        The callback of the route, this is called when it receives a request.
     """
 
     __slots__ = (

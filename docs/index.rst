@@ -12,3 +12,4 @@ Manuals
 
     api/index
     interactions/index
+    ipc/index

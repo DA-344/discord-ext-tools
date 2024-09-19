@@ -41,6 +41,7 @@ extlinks = {
 intersphinx_mapping = {
     "py": ("https://docs.python.org/3", None),
     "dpy": ("https://discordpy.readthedocs.io/en/latest/", None),
+    "aio": ("https://docs.aiohttp.org/en/stable/", None),
 }
 rst_prolog = """
 .. |coro| replace:: This function is a |coroutine_link|_.

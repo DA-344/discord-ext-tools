@@ -62,7 +62,7 @@ class ClientSession:
         The multicast port to connect to. Defaults to ``20000``.
     secret_key: :class:`str`
         The secret key to use on the ``Authorization`` header on request.
-        This must have the same value as :attr:`~.Server.secret_key`.
+        This must have the same value as :attr:`Server.secret_key`.
     session: :class:`~aiohttp.ClientSession`
         The session to use with this handler. If not provided creates a new one.
     """

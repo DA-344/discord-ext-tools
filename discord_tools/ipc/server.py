@@ -90,7 +90,7 @@ class Server(Generic[CT]):
 
     __slots__ = (
         'client',
-        'secret_key',
+        '_secret_key',
         'host',
         'port',
         'multicast',
@@ -109,13 +109,18 @@ class Server(Generic[CT]):
     ) -> None:
         self.client: ClientT[CT] = client
 
-        self.secret_key: Optional[str] = secret_key if secret_key is not MISSING else None
+        self._secret_key: str = secret_key
         self.host: str = host
         self.port: int = port
         self.multicast: bool = multicast
         self.multicast_port: int = multicast_port
 
         self._state: ServerState = ServerState(client, host, port, multicast, multicast_port, self.secret_key)
+
+    @property
+    def secret_key(self) -> str | None:
+        """Optional[:class:`str`]: Returns the secret key required for requests handling, or ``None``."""
+        return self._secret_key if self._secret_key is not MISSING else None
 
     @property
     def ws_url(self) -> str:

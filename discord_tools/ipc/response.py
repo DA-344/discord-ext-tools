@@ -115,7 +115,7 @@ class Request:
     async def wait_until_done(self) -> bool:
         """Waits for this request to be completed.
 
-        This could be useful if you respond to a request on another place outside :func:`on_ipc_request`.
+        This could be useful if you respond to a request on another place outside the route callback.
         """
         result = await self._response_future
         if result:

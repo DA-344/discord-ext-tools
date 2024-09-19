@@ -44,7 +44,7 @@ __slots__ = (
 
 
 class ClientSession:
-    """A simple wrapper around :class:`~aiohttp.ClientSession` for easy handling with an IPC server.
+    """A simple wrapper around an :class:`~aiohttp.ClientSession` for easy handling with an IPC server.
 
     .. container:: operations
 
@@ -67,6 +67,14 @@ class ClientSession:
         The session to use with this handler. If not provided creates a new one.
     """
 
+    __slots__ = (
+        'host',
+        'port',
+        'multicast_port',
+        '_secret_key',
+        'session',
+    )
+
     def __init__(
         self,
         host: str = "localhost",
@@ -79,16 +87,28 @@ class ClientSession:
         self.host: str = host
         self.port: int | None = port if port is not MISSING else None
         self.multicast_port: int = multicast_port
-        self.secret_key: str = secret_key
+        self._secret_key: str = secret_key
 
         if session is MISSING:
             session = aiohttp.ClientSession()
         self.session: aiohttp.ClientSession = session
 
     @property
+    def resolved_port(self) -> int:
+        """:class:`int`: Returns the resolved port to connect to, this is either the ``port`` parameter
+        or the ``multicast_port`` parameter if no value was provided on the previous one.
+        """
+        return self.port or self.multicast_port
+
+    @property
+    def secret_key(self) -> str | None:
+        """Optional[:class:`str`]: The secret key to use on authorization, or ``None``."""
+        return self._secret_key if self._secret_key is not MISSING else None
+
+    @property
     def url(self) -> str:
         """:class:`str`: Returns the URL of the websocket."""
-        return f'ws://{self.host}:{self.port or self.multicast_port}'
+        return f'ws://{self.host}:{self.resolved_port}'
 
     @overload
     async def request(self, route: str, /, **options: Any) -> dict[str, Any]:

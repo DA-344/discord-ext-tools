@@ -14,4 +14,4 @@ __version__ = "0.2.0a"
 from .models import *
 from .errors import *
 from .checks import *
-from . import app_commands
+from . import app_commands, ipc

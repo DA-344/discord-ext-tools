@@ -13,3 +13,4 @@ The following section outlines the API of discord-tools.
     checks
     errors
     models
+    converters

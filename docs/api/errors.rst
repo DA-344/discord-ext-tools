@@ -18,6 +18,9 @@ Exception Hierarchy
         - :exc:`MissingAttachments`
         - :exc:`NoVoiceState`
 
+    - :exc:`~discord.ext.commands.ConversionError`
+        - :exc:`StringDoesNotMatch`
+
 
 Objects
 -------
@@ -37,4 +40,7 @@ The following exceptions are thrown by the library.
     :members:
 
 .. autoexception:: NoVoiceState()
+    :members:
+
+.. autoexception:: StringDoesNotMatch()
     :members:

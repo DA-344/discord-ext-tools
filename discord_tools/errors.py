@@ -23,11 +23,15 @@ DEALINGS IN THE SOFTWARE.
 """
 from __future__ import annotations
 
-from typing import Any
+import re
+from typing import Any, TYPE_CHECKING
 
 from discord import Guild, Member
 from discord.utils import _human_join as human_join
-from discord.ext.commands import CheckFailure, Command, Context
+from discord.ext.commands import CheckFailure, Command, Context, ConversionError
+
+if TYPE_CHECKING:
+    from .converters import RegexConverter
 
 __all__ = (
     'MaxUsagesReached',
@@ -35,6 +39,7 @@ __all__ = (
     'MissingAnyPermissions',
     'MissingAttachments',
     'NoVoiceState',
+    'StringDoesNotMatch',
 )
 
 
@@ -124,3 +129,20 @@ class NoVoiceState(CheckFailure):
         self.author: Member = author
         self.context: Context[Any] = context
         super().__init__(f'{author} has no voice state.', *args)
+
+
+class StringDoesNotMatch(ConversionError):
+    """An exception raised when the :class:`RegexConverter` fails to find an occurrence in a string.
+
+    Attributes
+    ----------
+    pattern: :class:`re.Pattern`
+        The pattern that was searched for.
+    argument: :class:`str`
+        The argument that failed.
+    """
+
+    def __init__(self, converter: RegexConverter, argument: str, *args: Any) -> None:
+        self.pattern: re.Pattern = converter.pattern
+        self.argument: str = argument
+        super().__init__(converter, ValueError(f'{argument!r} did not match {self.pattern!r}.', *args))

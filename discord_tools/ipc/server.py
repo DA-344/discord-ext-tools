@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 from __future__ import annotations
 
 import logging
-from typing import Generic, Optional, ClassVar, TYPE_CHECKING, TypeVar, Any
+from typing import Generic, ClassVar, TYPE_CHECKING, TypeVar, Any
 
 from .state import ServerState
 from .route import Route

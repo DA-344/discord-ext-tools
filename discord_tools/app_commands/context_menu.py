@@ -33,6 +33,14 @@ from discord.app_commands import ContextMenu, locale_str, CommandTree
 
 CogLike = Union[Cog, GroupCog]
 CogT = TypeVar('CogT', bound=CogLike)
+InteractionT = TypeVar('InteractionT', bound=Interaction)
+T = TypeVar('T')
+ContextMenuCallback = Union[
+    Callable[[CogT, InteractionT[T], Message], Any],
+    Callable[[CogT, InteractionT[T], Member], Any],
+    Callable[[CogT, InteractionT[T], User], Any],
+    Callable[[CogT, InteractionT[T], Union[Member, User]], Any],
+]
 
 __all__ = (
     'CogContextMenuHolder',
@@ -91,7 +99,7 @@ class CogContextMenuHolder:
             'extras': extras,
         }
 
-        def wrapper(func: Callable[[CogT, Interaction[Any], Message | User | Member], Any]):
+        def wrapper(func: ContextMenuCallback):
             func.__context_menu__ = True
             func.__context_menu_kwargs__ = kwargs
             return func

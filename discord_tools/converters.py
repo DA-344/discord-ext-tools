@@ -28,7 +28,7 @@ from typing import TYPE_CHECKING
 
 from .errors import StringDoesNotMatch
 
-from discord.ext.commands import Converter, Context
+from discord.ext.commands import Converter, Context, clean_content
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -102,9 +102,9 @@ class RegexConverter(Converter[re.Match[str]]):
 
     async def convert(self, ctx: Context[BotT], argument: str) -> re.Match[str]:
         if self.use_clean_content:
-            content = ctx.message.clean_content
+            content = await clean_content().convert(ctx, argument)
         else:
-            content = ctx.message.content
+            content = argument
 
         match = self.pattern.fullmatch(content)
         if match is None:

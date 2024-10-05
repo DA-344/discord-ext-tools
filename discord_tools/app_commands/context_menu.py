@@ -33,13 +33,13 @@ from discord.app_commands import ContextMenu, locale_str, CommandTree
 
 CogLike = Union[Cog, GroupCog]
 CogT = TypeVar('CogT', bound=CogLike)
-InteractionT = TypeVar('InteractionT', bound=Interaction)
 T = TypeVar('T')
+InteractionT = TypeVar('InteractionT', bound=Interaction[T])
 ContextMenuCallback = Union[
-    Callable[[CogT, InteractionT[T], Message], Any],
-    Callable[[CogT, InteractionT[T], Member], Any],
-    Callable[[CogT, InteractionT[T], User], Any],
-    Callable[[CogT, InteractionT[T], Union[Member, User]], Any],
+    Callable[[CogT, InteractionT, Message], Any],
+    Callable[[CogT, InteractionT, Member], Any],
+    Callable[[CogT, InteractionT, User], Any],
+    Callable[[CogT, InteractionT, Union[Member, User]], Any],
 ]
 
 __all__ = (

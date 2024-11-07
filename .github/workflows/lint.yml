@@ -45,4 +45,4 @@ jobs:
       - name: Run black
         if: ${{ always() && steps.install-deps.outcome == 'success' }}
         run: |
-          black --check discord examples
+          black --check discord_tools examples

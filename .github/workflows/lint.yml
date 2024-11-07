@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ '3.8', '3.x' ]
+        python-version: [ '3.9', '3.x' ]
 
     name: check ${{ matrix.python-version }}
     steps:
@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         id: install-deps
         run: |
-          python -m pip install --upgrade pip setuptools wheel black==24.10.0 requests
+          python -m pip install --upgrade pip setuptools wheel black==24.8.0 requests
           pip install -U -r requirements.txt
 
       - name: Setup node.js

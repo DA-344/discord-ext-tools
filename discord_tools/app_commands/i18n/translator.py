@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import os
@@ -35,12 +36,10 @@ from discord.app_commands import (
     TranslationContext,
 )
 
-TranslationLoadStrategy = Literal[
-    'yaml', 'json', 'yml', 'po', 'mo'
-]
+TranslationLoadStrategy = Literal["yaml", "json", "yml", "po", "mo"]
 logger = logging.getLogger(__name__)
 
-__all__ = ('Translator',)
+__all__ = ("Translator",)
 
 
 class Translator(BaseTranslator):
@@ -55,19 +54,18 @@ class Translator(BaseTranslator):
     Examples can be found in the :resource:`repository <examples>`.
     """
 
-    def __init__(
-        self
-    ) -> None:
+    def __init__(self) -> None:
         # This saves the translations as following:
         # {discord.Locale.some_lang: {'original_string_key': 'translate_value'}}
         self._translations: dict[Locale, dict[str, str]] = {}
 
     def clear_translations(self) -> None:
-        """Clears all the translations.
-        """
+        """Clears all the translations."""
         self._translations.clear()
 
-    def update_translation(self, locale: Locale, data: dict[str, str]) -> dict[Locale, dict[str, str]]:
+    def update_translation(
+        self, locale: Locale, data: dict[str, str]
+    ) -> dict[Locale, dict[str, str]]:
         """Updates a locale's translation strings.
 
         Parameters
@@ -89,7 +87,7 @@ class Translator(BaseTranslator):
         """
 
         if locale not in self._translations:
-            raise KeyError('The locale has no translation strings')
+            raise KeyError("The locale has no translation strings")
 
         self._translations[locale].update(data)
         return self._translations
@@ -109,7 +107,7 @@ class Translator(BaseTranslator):
         """
 
         if locale not in self._translations:
-            raise KeyError('The locale has no translation strings')
+            raise KeyError("The locale has no translation strings")
 
         del self._translations[locale]
 
@@ -129,7 +127,7 @@ class Translator(BaseTranslator):
         """
 
         if locale not in self._translations:
-            raise KeyError('The locale has no translation strings.')
+            raise KeyError("The locale has no translation strings.")
 
         self.update_translation(locale, {})
 
@@ -146,7 +144,7 @@ class Translator(BaseTranslator):
         """
 
         if locale in self._translations:
-            raise KeyError('The locale already has translation strings.')
+            raise KeyError("The locale already has translation strings.")
 
         self._translations[locale] = data
 
@@ -179,54 +177,57 @@ class Translator(BaseTranslator):
 
         if strategy is MISSING:
             if isinstance(path, str):
-                strategy = path.split('.')[-1]
+                strategy = path.split(".")[-1]  # type: ignore
             elif isinstance(path, os.PathLike):
-                strategy = str(path).split('.')[-1]
+                strategy = str(path).split(".")[-1]  # type: ignore
             elif isinstance(path, (int, bytes)):
                 raise ValueError(
-                    'You must provide a strategy if using int or bytes paths',
+                    "You must provide a strategy if using int or bytes paths",
                 )
 
-        if strategy == 'json':
+        if strategy == "json":
             import json
+
             load = json.loads
-        elif strategy in ('yaml', 'yml'):
+        elif strategy in ("yaml", "yml"):
             try:
                 import yaml
             except ImportError:
                 raise ValueError(
-                    'Cannot translate y(a)ml files because the requirements are not installed,'
+                    "Cannot translate y(a)ml files because the requirements are not installed,"
                     'you can install them by using "pip install discord.py-tools[yaml-i18n]"'
                 )
 
             load = yaml.safe_load
-        elif strategy in ('po', 'mo'):
+        elif strategy in ("po", "mo"):
             if locale is MISSING:
                 raise ValueError(
-                    'locale is a required parameter if strategy is po or mo'
+                    "locale is a required parameter if strategy is po or mo"
                 )
             try:
                 import polib
             except ImportError:
                 raise ValueError(
-                    'Cannot translate po files because the requirements are not installed,'
+                    "Cannot translate po files because the requirements are not installed,"
                     'you can install them by using "pip install discord.py-tools[po-i18n]"'
                 )
-            func = getattr(polib, f'{strategy}file')
+            func = getattr(polib, f"{strategy}file")
             po_data = func(path)
             return self._save_po_data(po_data, locale)
         else:
             raise ValueError(
-                f'Not supported translation strategy provided: {strategy!r}.'
+                f"Not supported translation strategy provided: {strategy!r}."
             )
 
-        with open(path, 'r') as file:
+        with open(path, "r") as file:
             data = load(file.read())
-            return self._save_json_data(data)
+            return self._save_json_data(data)  # type: ignore
             # Does not matter anymore here if the data was loaded
             # using yaml or json, as it will be a dictionary anyways
 
-    def _save_json_data(self, data: dict[str, dict[str, str]]) -> dict[Locale, dict[str, str]]:
+    def _save_json_data(
+        self, data: dict[str, dict[str, str]]
+    ) -> dict[Locale, dict[str, str]]:
         resolved: dict[Locale, dict[str, str]] = {}
         for key, value in data.items():
             try:
@@ -236,8 +237,8 @@ class Translator(BaseTranslator):
 
             if not isinstance(value, dict):
                 logger.warning(
-                    f'Valid translation locale was provided ({key}) but value was not a dict, it was a {value.__class__.__name__!r}.'
-                    ' Discarding.'
+                    f"Valid translation locale was provided ({key}) but value was not a dict, it was a {value.__class__.__name__!r}."
+                    " Discarding."
                 )
                 continue
 
@@ -246,9 +247,10 @@ class Translator(BaseTranslator):
         self._translations.update(resolved)
         return resolved
 
-    def _save_po_data(self, data, locale: Locale) -> dict[Locale, dict[str, str]]:
+    def _save_po_data(self, data, locale: Locale) -> dict[Locale, dict[str, str]]:  # type: ignore
         if TYPE_CHECKING:
             import polib
+
             data: polib.POFile | polib.MOFile
 
         entry_warns: list[str] = []
@@ -263,14 +265,16 @@ class Translator(BaseTranslator):
 
         if entry_warns:
             logger.warning(
-                f'The following messages were not translated due to being obsolete, fuzzy, or not having a msgstr: {entry_warns}'
+                f"The following messages were not translated due to being obsolete, fuzzy, or not having a msgstr: {entry_warns}"
             )
 
         resolved = {locale: translations}
         self._translations.update(resolved)
         return resolved
 
-    async def translate(self, string: locale_str, locale: Locale, context: TranslationContext) -> str | None:
+    async def translate(
+        self, string: locale_str, locale: Locale, context: TranslationContext
+    ) -> str | None:
         translations = self._translations.get(locale)
         if translations is None:
             return None  # discord.py handles this

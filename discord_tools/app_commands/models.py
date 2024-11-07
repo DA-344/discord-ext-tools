@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 from typing import Any, TYPE_CHECKING
@@ -34,9 +35,7 @@ from .errors import MaxConcurrencyReached
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-__all__ = (
-    'MaxConcurrency',
-)
+__all__ = ("MaxConcurrency",)
 
 
 class MaxConcurrency:
@@ -49,13 +48,14 @@ class MaxConcurrency:
     per: :class:`.BucketType`
         The bucket to use for this max concurrency object.
     """
+
     # Similar copy from discord.py's max_concurrency object
     # MIT License (c) 2015 - present Rapptz
 
     __slots__ = (
-        'number',
-        'per',
-        '_mapping',
+        "number",
+        "per",
+        "_mapping",
     )
 
     def __init__(self, number: int, *, per: BucketType) -> None:
@@ -64,9 +64,7 @@ class MaxConcurrency:
         self.number: int = number
 
         if number <= 0:
-            raise ValueError(
-                "max_concurrency 'number' cannot be lower than 0"
-            )
+            raise ValueError("max_concurrency 'number' cannot be lower than 0")
 
         if not isinstance(per, BucketType):
             raise TypeError(
@@ -77,7 +75,7 @@ class MaxConcurrency:
         return self.__class__(self.number, per=self.per)
 
     def __repr__(self) -> str:
-        return f'<MaxConcurrency per={self.per!r} number={self.number}>'
+        return f"<MaxConcurrency per={self.per!r} number={self.number}>"
 
     def get_key(self, interaction: Interaction[Any]) -> Any:
         return self.per.get_key(interaction)

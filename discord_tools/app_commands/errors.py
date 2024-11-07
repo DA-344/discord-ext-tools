@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 from typing import Any, TYPE_CHECKING
@@ -33,8 +34,8 @@ if TYPE_CHECKING:
     from .enums import BucketType
 
 __all__ = (
-    'MissingSKU',
-    'MaxConcurrencyReached',
+    "MissingSKU",
+    "MaxConcurrencyReached",
 )
 
 
@@ -50,9 +51,14 @@ class MissingSKU(CheckFailure):
 
     def __init__(self, skus: list[Snowflake | str | int], *args: Any) -> None:
         self.skus: list[Snowflake | str | int] = skus
-        fmt = human_join(list(str(sku.id) if isinstance(sku, Snowflake) else sku for sku in skus), final="and")
+        fmt = human_join(
+            list(
+                str(sku.id) if isinstance(sku, Snowflake) else str(sku) for sku in skus
+            ),
+            final="and",
+        )
         super().__init__(
-            f'You are missing {fmt} SKU to run this command.',
+            f"You are missing {fmt} SKU to run this command.",
             *args,
         )
 
@@ -73,9 +79,9 @@ class MaxConcurrencyReached(CheckFailure):
         self.number: int = number
         self.per: BucketType = per
         name = per.name
-        suffix = 'per %s' % name if per.name != 'default' else 'globally'
-        plural = '%s times %s' if number > 1 else '%s time %s'
+        suffix = "per %s" % name if per.name != "default" else "globally"
+        plural = "%s times %s" if number > 1 else "%s time %s"
         fmt = plural % (number, suffix)
         super().__init__(
-            f'Too many people are using this command. It can only be used {fmt} concurrently.'
+            f"Too many people are using this command. It can only be used {fmt} concurrently."
         )

@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -38,9 +39,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-__slots__ = (
-    'ServerSession',
-)
+__slots__ = ("ServerSession",)
 
 
 class ClientSession:
@@ -68,11 +67,11 @@ class ClientSession:
     """
 
     __slots__ = (
-        'host',
-        'port',
-        'multicast_port',
-        '_secret_key',
-        'session',
+        "host",
+        "port",
+        "multicast_port",
+        "_secret_key",
+        "session",
     )
 
     def __init__(
@@ -108,15 +107,13 @@ class ClientSession:
     @property
     def url(self) -> str:
         """:class:`str`: Returns the URL of the websocket."""
-        return f'ws://{self.host}:{self.resolved_port}'
+        return f"ws://{self.host}:{self.resolved_port}"
 
     @overload
-    async def request(self, route: str, /, **options: Any) -> dict[str, Any]:
-        ...
+    async def request(self, route: str, /, **options: Any) -> dict[str, Any]: ...
 
     @overload
-    async def request(self, route: Route, /, **options: Any) -> dict[str, Any]:
-        ...
+    async def request(self, route: Route, /, **options: Any) -> dict[str, Any]: ...
 
     async def request(self, route: str | Route, /, **data: Any) -> dict[str, Any]:
         """Makes a request to the IPC server.
@@ -131,7 +128,9 @@ class ClientSession:
 
         route = str(route)
 
-        async with self.session.ws_connect(url=self.url, autoping=False, autoclose=False) as ws:
+        async with self.session.ws_connect(
+            url=self.url, autoping=False, autoclose=False
+        ) as ws:
             payload = {
                 "endpoint": route,
                 "data": data,
@@ -139,29 +138,31 @@ class ClientSession:
             }
 
             await ws.send_json(payload, dumps=dumps)
-            logger.debug('Session -> %s', payload)
+            logger.debug("Session -> %s", payload)
 
             resp = await ws.receive()
 
             if resp.type == aiohttp.WSMsgType.PING:
-                logger.debug('Received a PING request')
+                logger.debug("Received a PING request")
                 await ws.ping()
-                logger.debug('Sent a PING request, retrying request...')
+                logger.debug("Sent a PING request, retrying request...")
                 return await self.request(route, **data)
 
             if resp.type == aiohttp.WSMsgType.PONG:
-                logger.debug('Received a PONG request, retrying request...')
+                logger.debug("Received a PONG request, retrying request...")
                 return await self.request(route, **data)
 
             if resp.type == aiohttp.WSMsgType.CLOSED:
                 sleep_time = 5.5
                 tries = 0
                 logger.error(
-                    f'WebSocket connection was closed: IPC server is unreachable. Attempting reconnection in {sleep_time}...\n'
-                    'Make sure the IPC is available and you have provided the correct host and port values.'
+                    f"WebSocket connection was closed: IPC server is unreachable. Attempting reconnection in {sleep_time}...\n"
+                    "Make sure the IPC is available and you have provided the correct host and port values."
                 )
 
-                reconnection_failed = 'WebSocket reconnection failed. Retrying in {0} seconds...'
+                reconnection_failed = (
+                    "WebSocket reconnection failed. Retrying in {0} seconds..."
+                )
 
                 await asyncio.sleep(5)
 
@@ -171,16 +172,22 @@ class ClientSession:
                     tries += 1
 
                     if tries > 5:
-                        raise aiohttp.ServerDisconnectedError(resp)
+                        raise aiohttp.ServerDisconnectedError(resp)  # type: ignore
 
-                    sleep_time += 0.5 * tries  # Wait (1/2)n per iteration assuming n < 5
+                    sleep_time += (
+                        0.5 * tries
+                    )  # Wait (1/2)n per iteration assuming n < 5
 
-                logger.info('Successfully reconnected to IPC server. Retrying request...')
+                logger.info(
+                    "Successfully reconnected to IPC server. Retrying request..."
+                )
                 return await self.request(route, **data)
 
             return await resp.json(loads=loads)
 
-    def __call__(self, route: str | Route, /, **data: Any) -> Coroutine[Any, Any, dict[str, Any]]:
+    def __call__(
+        self, route: str | Route, /, **data: Any
+    ) -> Coroutine[Any, Any, dict[str, Any]]:
         return self.request(route, **data)
 
     async def __aenter__(self) -> Self:

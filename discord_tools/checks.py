@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 from typing import Any
@@ -31,14 +32,19 @@ from discord.abc import Snowflake
 from discord.ext.commands import BucketType, Context, check
 
 from .models import MaxUsages
-from .errors import NotInValidGuild, MissingAnyPermissions, MissingAttachments, NoVoiceState
+from .errors import (
+    NotInValidGuild,
+    MissingAnyPermissions,
+    MissingAttachments,
+    NoVoiceState,
+)
 
 __all__ = (
-    'max_usages',
-    'guilds',
-    'has_any_permissions',
-    'has_attachments',
-    'has_voice_state',
+    "max_usages",
+    "guilds",
+    "has_any_permissions",
+    "has_attachments",
+    "has_voice_state",
 )
 
 
@@ -72,7 +78,7 @@ def max_usages(
             limit,
             bucket,
             hide_after_limit=hide_after_limit,
-            disable_after_limit=disable_after_limit
+            disable_after_limit=disable_after_limit,
         )
     )
 
@@ -90,14 +96,17 @@ def guilds(*guild_ids: Snowflake | int):
     *guild_ids: Union[:class:`discord.abc.Snowflake`, :class:`int`]
         The guilds to limit the command to.
     """
-    guild_ids = [guild.id if isinstance(guild, Snowflake) else guild for guild in guild_ids]
+    resolved_ids = [
+        guild.id if isinstance(guild, Snowflake) else guild for guild in guild_ids
+    ]
 
     async def predicate(context: Context[Any]) -> bool:
         if not context.guild:
             return True
-        if context.guild.id not in guild_ids:
-            raise NotInValidGuild(context.command, context.guild)
+        if context.guild.id not in resolved_ids:
+            raise NotInValidGuild(context.command, context.guild)  # type: ignore
         return True
+
     return check(predicate)
 
 
@@ -115,17 +124,17 @@ def has_any_permissions(**perms: bool):
 
     invalid = set(perms) - set(Permissions.VALID_FLAGS)
     if invalid:
-        raise TypeError(f'Invalid permission(s) provided in has_any_permissions: {", ".join(invalid)}')
+        raise TypeError(
+            f'Invalid permission(s) provided in has_any_permissions: {", ".join(invalid)}'
+        )
 
     def predicate(context: Context[Any]) -> bool:
         permissions = context.permissions
 
-        if any(
-            getattr(permissions, perm) == value
-            for perm, value in perms.items()
-        ):
+        if any(getattr(permissions, perm) == value for perm, value in perms.items()):
             return True
         raise MissingAnyPermissions(list(perms.keys()))
+
     return check(predicate)
 
 
@@ -138,7 +147,7 @@ def has_attachments(*, count: int = MISSING):
         The amount of attachments the message should have for this check to pass successfully. Limit is 10.
     """
     if count is not MISSING and count > 10:
-        raise ValueError('Can only limit attachments to 10')
+        raise ValueError("Can only limit attachments to 10")
 
     def predicate(context: Context[Any]) -> bool:
         if count is MISSING:
@@ -148,12 +157,12 @@ def has_attachments(*, count: int = MISSING):
             if len(context.message.attachments) < count:
                 raise MissingAttachments(len(context.message.attachments), count)
         return True
+
     return check(predicate)
 
 
 def has_voice_state():
-    """A decorator that checks if the command invoker has a voice state (is in a voice channel).
-    """
+    """A decorator that checks if the command invoker has a voice state (is in a voice channel)."""
 
     def predicate(context: Context[Any]) -> bool:
         if not isinstance(context.author, Member):
@@ -161,4 +170,5 @@ def has_voice_state():
         if context.author.voice is None:
             raise NoVoiceState(context.author, context)
         return True
+
     return check(predicate)

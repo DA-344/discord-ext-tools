@@ -8,6 +8,8 @@ commands or application commands.
 
 ## Installation
 
+**Python 3.9 or higher is required.**
+
 Main package:
 ```shell
 pip install discord.py-tools

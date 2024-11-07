@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import re
@@ -35,7 +36,7 @@ if TYPE_CHECKING:
 
     from discord.ext.commands.core import BotT
 
-__all__ = ('RegexConverter',)
+__all__ = ("RegexConverter",)
 
 
 class RegexConverter(Converter[re.Match[str]]):
@@ -91,7 +92,7 @@ class RegexConverter(Converter[re.Match[str]]):
         self.use_clean_content: bool = use_clean_content
 
     def __repr__(self) -> str:
-        return f'RegexConverter[r{self.pattern.pattern!r}]'
+        return f"RegexConverter[r{self.pattern.pattern!r}]"
 
     def __class_getitem__(cls, obj: re.Pattern[str] | tuple[re.Pattern[str]]) -> Self:
         if isinstance(obj, tuple):

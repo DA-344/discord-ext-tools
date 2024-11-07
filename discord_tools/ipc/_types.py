@@ -22,19 +22,20 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-from typing import TypeVar, Coroutine, Any, Callable
+from typing import TypeVar, Any
+from collections.abc import Coroutine, Callable
 
 from discord import Client
 
-T = TypeVar('T')
-C = TypeVar('C')
-CT = TypeVar('CT')
-ClientT = TypeVar('ClientT', bound=Client)
+T = TypeVar("T")
+C = TypeVar("C")
+CT = TypeVar("CT")
+ClientT = TypeVar("ClientT", bound=Client)
 Coro = Coroutine[Any, Any, T]
-CoroFunc = Callable[..., Coro[Any]]
+CoroFunc = Callable[..., Coro[T]]
 
 try:
-    import orjson as json
+    import orjson as json  # type: ignore
 except ImportError:
     import json as json
 

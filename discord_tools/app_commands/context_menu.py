@@ -21,10 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import inspect
-from typing import Union, TypeVar, Any, Callable, Optional
+from typing import Generic, Union, TypeVar, Any, Callable, Optional
 
 from discord import Interaction, Message, Member, User
 from discord.utils import MISSING, find
@@ -32,9 +33,9 @@ from discord.ext.commands import Cog, GroupCog, Bot
 from discord.app_commands import ContextMenu, locale_str, CommandTree
 
 CogLike = Union[Cog, GroupCog]
-CogT = TypeVar('CogT', bound=CogLike)
-T = TypeVar('T')
-InteractionT = TypeVar('InteractionT', bound=Interaction[T])
+CogT = TypeVar("CogT", bound=CogLike)
+T = TypeVar("T")
+InteractionT = TypeVar("InteractionT", bound=Interaction[Any])
 ContextMenuCallback = Union[
     Callable[[CogT, InteractionT, Message], Any],
     Callable[[CogT, InteractionT, Member], Any],
@@ -42,12 +43,10 @@ ContextMenuCallback = Union[
     Callable[[CogT, InteractionT, Union[Member, User]], Any],
 ]
 
-__all__ = (
-    'CogContextMenuHolder',
-)
+__all__ = ("CogContextMenuHolder",)
 
 
-class CogContextMenuHolder:
+class CogContextMenuHolder(Generic[CogT]):
     """Represents a :class:`discord.ext.commands.Cog` or :class:`discord.ext.commands.GroupCog` context menu holder.
 
     Parameters
@@ -93,16 +92,17 @@ class CogContextMenuHolder:
         """
 
         kwargs = {
-            'name': name,
-            'nsfw': nsfw,
-            'auto_locale_strings': auto_locale_strings,
-            'extras': extras,
+            "name": name,
+            "nsfw": nsfw,
+            "auto_locale_strings": auto_locale_strings,
+            "extras": extras,
         }
 
         def wrapper(func: ContextMenuCallback):
-            func.__context_menu__ = True
-            func.__context_menu_kwargs__ = kwargs
+            func.__context_menu__ = True  # type: ignore
+            func.__context_menu_kwargs__ = kwargs  # type: ignore
             return func
+
         return wrapper
 
     @property
@@ -122,7 +122,7 @@ class CogContextMenuHolder:
         """
 
         for attr, value in inspect.getmembers(self.cog):
-            if getattr(value, '__context_menu__', False):
+            if getattr(value, "__context_menu__", False):
                 data = value.__context_menu_kwargs__
                 ret = ContextMenu(
                     **data,
@@ -131,10 +131,10 @@ class CogContextMenuHolder:
                 self._context_menus.append(ret)
 
     def _get_cog_client(self) -> Optional[Bot]:
-        if hasattr(self.cog, 'bot'):
-            return self.cog.bot
-        if hasattr(self.cog, 'client'):
-            return self.cog.client
+        if hasattr(self.cog, "bot"):
+            return self.cog.bot  # type: ignore
+        if hasattr(self.cog, "client"):
+            return self.cog.client  # type: ignore
         return None
 
     def add_to_tree(self, *, tree: CommandTree = MISSING):
@@ -158,9 +158,7 @@ class CogContextMenuHolder:
             client = self._get_cog_client()
 
             if client is None:
-                raise RuntimeError(
-                    f'No client/bot found on the {self.cog!r} cog.'
-                )
+                raise RuntimeError(f"No client/bot found on the {self.cog!r} cog.")
 
             tree = client.tree
 
@@ -185,10 +183,10 @@ class CogContextMenuHolder:
             The context menu that was removed, or ``None``.
         """
 
-        menu = find(lambda cm: cm.name == menu, self._context_menus)
-        if menu is not None:
-            self._context_menus.remove(menu)
-            return menu
+        app_menu = find(lambda cm: cm.name == menu, self._context_menus)
+        if app_menu is not None:
+            self._context_menus.remove(app_menu)
+            return app_menu
         return None
 
     def clear(self):

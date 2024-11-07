@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import logging
@@ -38,7 +39,7 @@ from discord.utils import MISSING
 
 logger = logging.getLogger(__name__)
 
-__all__ = ('ServerState',)
+__all__ = ("ServerState",)
 
 
 class ServerState:
@@ -61,29 +62,36 @@ class ServerState:
         self.routes: dict[str, Route[Any]] = {}
         self.application: aiohttp.web.Application = MISSING
         self.multicast_application: aiohttp.web.Application = MISSING
-        self.applications_tcps: dict[aiohttp.web.Application, tuple[aiohttp.web.AppRunner, aiohttp.web.TCPSite]] = {}
+        self.applications_tcps: dict[
+            aiohttp.web.Application, tuple[aiohttp.web.AppRunner, aiohttp.web.TCPSite]
+        ] = {}
 
-    async def send_json(self, websocket: aiohttp.web.WebSocketResponse, data: dict[str, Any], compress: bool | None = None):
+    async def send_json(
+        self,
+        websocket: aiohttp.web.WebSocketResponse,
+        data: dict[str, Any],
+        compress: bool | None = None,
+    ):
         await websocket.send_json(
             data,
             compress=compress,
             dumps=dumps,
         )
-        logger.debug('IPC -> %r', data)
+        logger.debug("IPC -> %r", data)
 
     @property
     def index_router(self) -> CoroFunc:
-        if '/' in self.routes:
-            return self.routes['/']
+        if "/" in self.routes:
+            return self.routes["/"]
         return self.handle_request
 
     async def setup_application(self):
         self.application = aiohttp.web.Application()
-        self.application.router.add_route('GET', '/', self.index_router)
+        self.application.router.add_route("GET", "/", self.index_router)
 
         if self.multicast:
             self.multicast_application = aiohttp.web.Application()
-            self.multicast_application.router.add_route('GET', '/', self.handle_multicast_request)
+            self.multicast_application.router.add_route("GET", "/", self.handle_multicast_request)  # type: ignore
 
     async def start_application(self, multicast: bool = False):
         if multicast:
@@ -94,7 +102,7 @@ class ServerState:
             port = self.port
 
         if application is MISSING:
-            raise RuntimeError('Application is not yet set up')
+            raise RuntimeError("Application is not yet set up")
 
         app_runner = aiohttp.web.AppRunner(application)
         await app_runner.setup()
@@ -121,91 +129,78 @@ class ServerState:
         msg: aiohttp.WSMessage
         async for msg in ws:
             payload = msg.json(loads=loads)
-            logger.debug('IPC <- %r', payload)
+            logger.debug("IPC <- %r", payload)
 
-            if 'endpoint' not in payload:
+            if "endpoint" not in payload:
                 logger.warning(
-                    'A request (%s) had no endpoint set',
+                    "A request (%s) had no endpoint set",
                     repr(request),
                 )
                 await self.send_json(
                     ws,
-                    {'error': 'No endpoint was set', 'code': 401},
+                    {"error": "No endpoint was set", "code": 401},
                 )
                 return
 
-            endpoint = payload['endpoint']
+            endpoint = payload["endpoint"]
             if endpoint not in self.routes:
                 logger.warning(
-                    'Received a request pointing to %s, which is not a valid route.',
+                    "Received a request pointing to %s, which is not a valid route.",
                     endpoint,
                 )
                 await self.send_json(
                     ws,
-                    {'error': 'Invalid endpoint provided', 'code': 400},
+                    {"error": "Invalid endpoint provided", "code": 400},
                 )
                 return
 
-            headers = request.get('headers', {})
+            headers = request.get("headers", {})
 
-            if 'Authorization' not in headers:
-                logger.warning(
-                    'Received an unauthorized request.'
-                )
-                await self.send_json(
-                    ws,
-                    {'error': 'Unauthorized', 'code': 401}
-                )
+            if "Authorization" not in headers:
+                logger.warning("Received an unauthorized request.")
+                await self.send_json(ws, {"error": "Unauthorized", "code": 401})
                 return
 
-            if headers['Authorization'] != self.secret_key:
-                await self.send_json(
-                    ws,
-                    {'error': 'Unauthorized', 'code': 403}
-                )
+            if headers["Authorization"] != self.secret_key:
+                await self.send_json(ws, {"error": "Unauthorized", "code": 403})
                 return
 
-            ret = Request(payload.get('data', {}), ws, endpoint, headers, self.loop)
-            self.client.dispatch('raw_ipc_request', ret)
+            ret = Request(payload.get("data", {}), ws, endpoint, headers, self.loop)
+            self.client.dispatch("raw_ipc_request", ret)
 
             if endpoint in self.routes:
                 await self.routes[endpoint](ret)
-                self.client.dispatch('ipc_request_completion', ret)
+                self.client.dispatch("ipc_request_completion", ret)
 
     async def handle_multicast_request(self, request: aiohttp.web.Request):
-        logger.debug('Starting IPC multicast server')
+        logger.debug("Starting IPC multicast server")
         ws = aiohttp.web.WebSocketResponse()
         await ws.prepare(request)
 
         msg: aiohttp.WSMessage
         async for msg in ws:
             payload = msg.json(loads=loads)
-            logger.debug('IPC Multicast <- %r', payload)
+            logger.debug("IPC Multicast <- %r", payload)
 
-            headers = payload.get('headers', {})
+            headers = payload.get("headers", {})
 
-            if 'Authorization' not in headers:
-                logger.warning(
-                    'Received an unauthorized request.'
-                )
-                await self.send_json(
-                    ws,
-                    {'error': 'Unauthorized', 'code': 403}
-                )
+            if "Authorization" not in headers:
+                logger.warning("Received an unauthorized request.")
+                await self.send_json(ws, {"error": "Unauthorized", "code": 403})
                 return
 
-            if headers['Authorization'] != self.secret_key:
+            if headers["Authorization"] != self.secret_key:
                 await self.send_json(
                     ws,
-                    {'error': 'Unauthorized', 'code': 403},
+                    {"error": "Unauthorized", "code": 403},
                 )
                 return
 
             await self.send_json(
                 ws,
                 {
-                    'message': 'Successfully connected',
-                    'code': 200,
-                    'port': self.port,
-                }
+                    "message": "Successfully connected",
+                    "code": 200,
+                    "port": self.port,
+                },
             )

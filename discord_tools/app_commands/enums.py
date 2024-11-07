@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 from enum import Enum
@@ -28,9 +29,7 @@ from typing import Any
 
 from discord import Interaction
 
-__all__ = (
-    'BucketType',
-)
+__all__ = ("BucketType",)
 
 
 class BucketType(Enum):
@@ -74,7 +73,7 @@ class BucketType(Enum):
         if self is BucketType.member:
             return interaction.guild_id, interaction.user.id
         if self is BucketType.category:
-            return (interaction.channel and (interaction.channel.category or interaction.channel)).id
+            return (interaction.channel and (interaction.channel.category or interaction.channel)).id  # type: ignore
         if self is BucketType.role:
             return interaction.channel_id if interaction.guild_id is None else interaction.user.top_role.id  # type: ignore
 

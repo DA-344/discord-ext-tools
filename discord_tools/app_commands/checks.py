@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 from typing import Any
@@ -35,9 +36,9 @@ from .models import MaxConcurrency
 from ..models import MaxUsages
 
 __all__ = (
-    'max_usages',
-    'has_skus',
-    'max_concurrency',
+    "max_usages",
+    "has_skus",
+    "max_concurrency",
 )
 
 
@@ -67,12 +68,10 @@ def has_skus(*sku_ids: int | str | Snowflake):
     def predicate(interaction: Interaction[Any]) -> bool:
         entitlements_sku_ids = [e.sku_id for e in interaction.entitlements]
 
-        if any(
-            esi not in skus
-            for esi in entitlements_sku_ids
-        ):
+        if any(esi not in skus for esi in entitlements_sku_ids):
             raise MissingSKU(list(sku_ids))
         return True
+
     return check(predicate)
 
 
@@ -106,4 +105,5 @@ def max_concurrency(number: int, per: BucketType = BucketType.default):
         # If it does not error in obj.acquire then it has not reached the
         # max concurrency yet. So return a True.
         return True
+
     return check(predicate)

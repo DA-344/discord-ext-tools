@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -30,11 +31,9 @@ if TYPE_CHECKING:
     from ._types import CoroFunc, Coro
     from .response import Request
 
-R = TypeVar('R')
+R = TypeVar("R")
 
-__all__ = (
-    'Route',
-)
+__all__ = ("Route",)
 
 
 class Route(Generic[R]):
@@ -55,15 +54,13 @@ class Route(Generic[R]):
     """
 
     __slots__ = (
-        'callback',
-        'name',
+        "callback",
+        "name",
     )
 
     def __init__(self, callback: CoroFunc[R], name: str) -> None:
         if not asyncio.iscoroutinefunction(callback):
-            raise TypeError(
-                f'callback on {name!r} route is not a coroutine'
-            )
+            raise TypeError(f"callback on {name!r} route is not a coroutine")
         self.callback: CoroFunc[R] = callback
         self.name: str = name
 
@@ -71,9 +68,7 @@ class Route(Generic[R]):
         return self.callback(request)
 
     def __str__(self) -> str:
-        return f'{self.name}'
+        return f"{self.name}"
 
     def __setattr__(self, name: str, value: Any) -> None:
-        raise TypeError(
-            'routes are immutable'
-        )
+        raise TypeError("routes are immutable")

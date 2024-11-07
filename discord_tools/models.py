@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 from typing import Any, Literal, Coroutine, TYPE_CHECKING, Union
@@ -35,9 +36,7 @@ if TYPE_CHECKING:
 
     BucketType = Union[ExtBucketType, AppBucketType]
 
-__all__ = (
-    'MaxUsages',
-)
+__all__ = ("MaxUsages",)
 
 
 class MaxUsages:
@@ -58,21 +57,23 @@ class MaxUsages:
     """
 
     __slots__ = (
-        'limit',
-        'bucket',
-        'hide_after_limit',
-        'disable_after_limit',
-        '_data',
+        "limit",
+        "bucket",
+        "hide_after_limit",
+        "disable_after_limit",
+        "_data",
     )
 
     def __init__(self, limit: int, bucket: BucketType, **options: Any) -> None:
         self.limit: int = limit
         self.bucket: BucketType = bucket
-        self.hide_after_limit: bool = options.pop('hide_after_limit', False)
-        self.disable_after_limit: bool = options.pop('disable_after_limit', False)
+        self.hide_after_limit: bool = options.pop("hide_after_limit", False)
+        self.disable_after_limit: bool = options.pop("disable_after_limit", False)
         self._data: dict[Any, int] = {}
 
-    async def check_usage(self, context: Context[Any] | Interaction[Any]) -> Literal[True]:
+    async def check_usage(
+        self, context: Context[Any] | Interaction[Any]
+    ) -> Literal[True]:
         key = self.get_bucket(context)
 
         if key in self._data:
@@ -84,15 +85,17 @@ class MaxUsages:
             self._data[key] += 1
             return True
 
-        if self.bucket.name == 'default':
+        if self.bucket.name == "default":
             if self.hide_after_limit is True:
-                context.command.hidden = True
+                context.command.hidden = True  # type: ignore
             if self.disable_after_limit is True:
-                context.command.enabled = False
-        raise MaxUsagesReached(context.command, self.limit)
+                context.command.enabled = False  # type: ignore
+        raise MaxUsagesReached(context.command, self.limit)  # type: ignore
 
-    def __call__(self, context: Context[Any] | Interaction[Any]) -> Coroutine[Any, Any, Literal[True]]:
+    def __call__(
+        self, context: Context[Any] | Interaction[Any]
+    ) -> Coroutine[Any, Any, Literal[True]]:
         return self.check_usage(context)
 
     def get_bucket(self, context: Context[Any] | Interaction[Any]) -> Any:
-        return self.bucket.get_key(context)
+        return self.bucket.get_key(context)  # type: ignore

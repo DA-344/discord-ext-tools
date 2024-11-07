@@ -21,19 +21,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Iterator
-from collections.abc import KeysView, ValuesView, ItemsView
+from typing import Any
+from collections.abc import KeysView, ValuesView, ItemsView, Iterator
 
 from ._types import dumps
 
 import aiohttp.web
 
-__all__ = (
-    'Request',
-)
+__all__ = ("Request",)
 
 
 class Request:
@@ -54,12 +53,12 @@ class Request:
     """
 
     __slots__ = (
-        '_data',
-        '_ws',
-        '_response_future',
-        '_loop',
-        'endpoint',
-        'headers',
+        "_data",
+        "_ws",
+        "_response_future",
+        "_loop",
+        "endpoint",
+        "headers",
     )
 
     def __init__(
@@ -81,7 +80,7 @@ class Request:
         return self._data[key]
 
     def __setitem__(self, key: str, value: Any):
-        raise TypeError('Responses are immutable')
+        raise TypeError("Responses are immutable")
 
     def __iter__(self) -> Iterator[str]:
         return iter(self._data)
@@ -122,7 +121,9 @@ class Request:
             raise result
         return True
 
-    async def respond(self, data: dict[str, Any], *, compress: bool | None = None) -> None:
+    async def respond(
+        self, data: dict[str, Any], *, compress: bool | None = None
+    ) -> None:
         """Sends a JSON response to this request.
 
         Parameters
@@ -143,4 +144,3 @@ class Request:
             self._response_future.set_exception(exc)
         else:
             self._response_future.set_result(None)
-

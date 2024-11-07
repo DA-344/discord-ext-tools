@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import logging
@@ -29,19 +30,20 @@ from typing import Generic, ClassVar, TYPE_CHECKING, TypeVar, Any
 from .state import ServerState
 from .route import Route
 
+from discord import Client
 from discord.utils import MISSING, copy_doc
 
 logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from ._types import CoroFunc, ClientT
+    from ._types import CoroFunc
 
-C = TypeVar('C')
-CT = TypeVar('CT')
+C = TypeVar("C")
+CT = TypeVar("CT", bound=Client)
 
 __all__ = (
-    'route',
-    'Server',
+    "route",
+    "Server",
 )
 
 
@@ -57,9 +59,9 @@ def route(name: str = MISSING):
     def decorator(func: CoroFunc[C]) -> Route[C]:
         resolved_name = func.__name__ if name is MISSING else name
         if not resolved_name:
-            raise ValueError('cannot have an empty route name')
-        if resolved_name[0] != '/':
-            resolved_name = '/' + resolved_name
+            raise ValueError("cannot have an empty route name")
+        if resolved_name[0] != "/":
+            resolved_name = "/" + resolved_name
         return Route(func, resolved_name)
 
     return decorator
@@ -89,25 +91,25 @@ class Server(Generic[CT]):
     _routes: ClassVar[dict[str, Route[Any]]] = {}
 
     __slots__ = (
-        'client',
-        '_secret_key',
-        'host',
-        'port',
-        'multicast',
-        'multicast_port',
-        '_state',
+        "client",
+        "_secret_key",
+        "host",
+        "port",
+        "multicast",
+        "multicast_port",
+        "_state",
     )
 
     def __init__(
         self,
-        client: ClientT[CT],
+        client: CT,
         host: str = "localhost",
         port: int = 8000,
         secret_key: str = MISSING,
         multicast: bool = True,
         multicast_port: int = 20000,
     ) -> None:
-        self.client: ClientT[CT] = client
+        self.client: CT = client
 
         self._secret_key: str = secret_key
         self.host: str = host
@@ -115,7 +117,9 @@ class Server(Generic[CT]):
         self.multicast: bool = multicast
         self.multicast_port: int = multicast_port
 
-        self._state: ServerState = ServerState(client, host, port, multicast, multicast_port, self.secret_key)
+        self._state: ServerState = ServerState(
+            client, host, port, multicast, multicast_port, self.secret_key
+        )
 
     @property
     def secret_key(self) -> str | None:

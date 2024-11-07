@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 import re
@@ -34,12 +35,12 @@ if TYPE_CHECKING:
     from .converters import RegexConverter
 
 __all__ = (
-    'MaxUsagesReached',
-    'NotInValidGuild',
-    'MissingAnyPermissions',
-    'MissingAttachments',
-    'NoVoiceState',
-    'StringDoesNotMatch',
+    "MaxUsagesReached",
+    "NotInValidGuild",
+    "MissingAnyPermissions",
+    "MissingAttachments",
+    "NoVoiceState",
+    "StringDoesNotMatch",
 )
 
 
@@ -54,7 +55,9 @@ class MaxUsagesReached(CheckFailure):
 
     def __init__(self, command: Command[Any, ..., Any], limit: int, *args: Any) -> None:
         self.command: Command[Any, ..., Any] = command
-        super().__init__(f'{command.qualified_name} has reached the maximum usages ({limit})', *args)
+        super().__init__(
+            f"{command.qualified_name} has reached the maximum usages ({limit})", *args
+        )
 
 
 class NotInValidGuild(CheckFailure):
@@ -68,10 +71,15 @@ class NotInValidGuild(CheckFailure):
         The guild in which this command was invoked in.
     """
 
-    def __init__(self, command: Command[Any, ..., Any], guild: Guild, *args: Any) -> None:
+    def __init__(
+        self, command: Command[Any, ..., Any], guild: Guild, *args: Any
+    ) -> None:
         self.command: Command[Any, ..., Any] = command
         self.guild: Guild = guild
-        super().__init__(f'{guild.id} was not a valid guild for {command.qualified_name} to be invoked', *args)
+        super().__init__(
+            f"{guild.id} was not a valid guild for {command.qualified_name} to be invoked",
+            *args,
+        )
 
 
 class MissingAnyPermissions(CheckFailure):
@@ -87,7 +95,10 @@ class MissingAnyPermissions(CheckFailure):
     def __init__(self, missing_permissions: list[str], *args: Any) -> None:
         self.missing_permissions: list[str] = missing_permissions
 
-        missing = [perm.replace('_', ' ').replace('guild', 'server').title() for perm in missing_permissions]
+        missing = [
+            perm.replace("_", " ").replace("guild", "server").title()
+            for perm in missing_permissions
+        ]
 
         message = f'You are missing {human_join(missing, final=", and")} permission(s) to run this command.'
         super().__init__(message, *args)
@@ -109,7 +120,7 @@ class MissingAttachments(CheckFailure):
         self.attachment_count: int = count
         self.attachment_minimum: int = minimum
         super().__init__(
-            f'{count} attachments were provided and {minimum} were required.',
+            f"{count} attachments were provided and {minimum} were required.",
             *args,
         )
 
@@ -128,7 +139,7 @@ class NoVoiceState(CheckFailure):
     def __init__(self, author: Member, context: Context[Any], *args: Any) -> None:
         self.author: Member = author
         self.context: Context[Any] = context
-        super().__init__(f'{author} has no voice state.', *args)
+        super().__init__(f"{author} has no voice state.", *args)
 
 
 class StringDoesNotMatch(ConversionError):
@@ -145,4 +156,7 @@ class StringDoesNotMatch(ConversionError):
     def __init__(self, converter: RegexConverter, argument: str, *args: Any) -> None:
         self.pattern: re.Pattern = converter.pattern
         self.argument: str = argument
-        super().__init__(converter, ValueError(f'{argument!r} did not match {self.pattern!r}.', *args))
+        super().__init__(
+            converter,
+            ValueError(f"{argument!r} did not match {self.pattern!r}.", *args),
+        )

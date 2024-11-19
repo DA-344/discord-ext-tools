@@ -13,3 +13,22 @@ RegexConverter
 .. autoclass:: RegexConverter()
     :members:
     :exclude-members: convert
+
+Implicit Boolean Flag Converters
+--------------------------------
+
+.. autofunction:: flag
+
+Flag
+~~~~
+.. attributetable:: Flag
+
+.. autoclass:: Flag()
+
+ImplicitBoolFlagConverter
+~~~~~~~~~~~~~~~~~~~~~~~~~
+.. attributetable:: ImplicitBoolFlagConverter
+
+.. autoclass:: ImplicitBoolFlagConverter()
+    :members:
+    :exclude-members: convert, parse-flags

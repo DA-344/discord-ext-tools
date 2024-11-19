@@ -2,6 +2,9 @@ name: lint
 
 on:
   push:
+    paths:
+      - 'discord_tools/**'
+      - 'examples/**'
   pull_request:
     types: [ opened, reopened, synchronize ]
 

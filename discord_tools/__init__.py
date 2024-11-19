@@ -17,4 +17,5 @@ from .models import *
 from .errors import *
 from .checks import *
 from .converters import *
+from .flags import *
 from . import app_commands as app_commands

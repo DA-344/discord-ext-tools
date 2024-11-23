@@ -25,6 +25,7 @@ DEALINGS IN THE SOFTWARE.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 from discord.utils import maybe_coroutine, MISSING
@@ -205,8 +206,26 @@ class ImplicitBoolFlagConverter(FlagConverter):
 
         case_insensitive = cls.__commands_flag_case_insensitive__
 
+        regex_flags = 0
+        if case_insensitive:
+            flags = {key.casefold(): value for key, value in flags.items()}
+            aliases = {key.casefold(): value.casefold() for key, value in aliases.items()}
+            regex_flags = re.IGNORECASE
+
+        prefix = cls.__commands_flag_prefix__
+        delimiter = cls.__commands_flag_delimiter__
+        keys = [re.escape(k) for k in flags]
+        keys.extend(re.escape(a) for a in aliases)
+        keys = sorted(keys, key=len, reverse=True)
+
+        joined = '|'.join(keys)
+        pattern = re.compile(
+            f'(({re.escape(prefix)})(?P<flag>{joined})(?P<delimiter>{delimiter}?))',
+            flags=regex_flags,
+        )
+
         if positional_flag is not None:
-            match = cls.__commands_flag_regex__.search(argument)
+            match = pattern.search(argument)
 
             if match is not None:
                 begin, end = match.span(0)
@@ -223,7 +242,7 @@ class ImplicitBoolFlagConverter(FlagConverter):
                 )
                 result[name] = [value]
 
-        for match in cls.__commands_flag_regex__.finditer(argument):
+        for match in pattern.finditer(argument):
             begin, end = match.span(0)
             key = match.group("flag")
             if case_insensitive:
@@ -238,9 +257,13 @@ class ImplicitBoolFlagConverter(FlagConverter):
 
                 is_implicit = getattr(last_flag, "implicit", False)
 
+                delim = match.group('delimiter')
+                if not delim and not is_implicit:
+                    continue  # ignore
+
                 if not value and not is_implicit:
                     raise MissingFlagArgument(last_flag)
-                else:
+                elif is_implicit:
                     value = "1"
 
                 name = last_flag.name.casefold() if case_insensitive else last_flag.name
@@ -262,7 +285,7 @@ class ImplicitBoolFlagConverter(FlagConverter):
 
             if not value and not is_implicit:
                 raise MissingFlagArgument(last_flag)
-            else:
+            elif is_implicit:
                 value = "1"
 
             name = last_flag.name.casefold() if case_insensitive else last_flag.name

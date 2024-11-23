@@ -220,7 +220,7 @@ class ImplicitBoolFlagConverter(FlagConverter):
 
         joined = '|'.join(keys)
         pattern = re.compile(
-            f'(({re.escape(prefix)})(?P<flag>{joined})(?P<delimiter>{delimiter}?))',
+            f'(({re.escape(prefix)})(?P<flag>{joined})(?P<delimiter>{re.escape(delimiter)}?))',
             flags=regex_flags,
         )
 

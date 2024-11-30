@@ -28,7 +28,7 @@ from typing import Any
 
 from discord import Interaction
 from discord.abc import Snowflake
-from discord.app_commands.checks import check
+from discord.app_commands.commands import check
 
 from .errors import MissingSKU
 from .enums import BucketType

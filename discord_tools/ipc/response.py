@@ -117,8 +117,6 @@ class Request:
         This could be useful if you respond to a request on another place outside the route callback.
         """
         result = await self._response_future
-        if result:
-            raise result
         return True
 
     async def respond(

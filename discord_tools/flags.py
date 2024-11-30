@@ -209,7 +209,9 @@ class ImplicitBoolFlagConverter(FlagConverter):
         regex_flags = 0
         if case_insensitive:
             flags = {key.casefold(): value for key, value in flags.items()}
-            aliases = {key.casefold(): value.casefold() for key, value in aliases.items()}
+            aliases = {
+                key.casefold(): value.casefold() for key, value in aliases.items()
+            }
             regex_flags = re.IGNORECASE
 
         prefix = cls.__commands_flag_prefix__
@@ -218,9 +220,9 @@ class ImplicitBoolFlagConverter(FlagConverter):
         keys.extend(re.escape(a) for a in aliases)
         keys = sorted(keys, key=len, reverse=True)
 
-        joined = '|'.join(keys)
+        joined = "|".join(keys)
         pattern = re.compile(
-            f'(({re.escape(prefix)})(?P<flag>{joined})({re.escape(delimiter)}?))',
+            f"(({re.escape(prefix)})(?P<flag>{joined})({re.escape(delimiter)}?))",
             flags=regex_flags,
         )
 
@@ -257,7 +259,7 @@ class ImplicitBoolFlagConverter(FlagConverter):
 
                 is_implicit = getattr(last_flag, "implicit", False)
 
-                delim = match.group('delimiter')
+                delim = match.group("delimiter")
                 if not delim and not is_implicit:
                     continue  # ignore
 

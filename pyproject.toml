@@ -61,3 +61,21 @@ packages = [
     "discord_tools.app_commands.i18n",
 ]
 include-package-data = true
+
+[tool.pyright]
+include = [
+    "discord_tools",
+    "discord_tools.ipc",
+    "discord_tools.app_commands",
+    "discord_tools.app_commands.i18n",
+]
+exclude = [
+    "**/__pycache__",
+    "build",
+    "dist",
+    "docs",
+]
+reportUnnecessaryTypeIgnoreComment = "warning"
+reportUnusedImport = "error"
+pythonVersion = "3.9"
+typeCheckingMode = "basic"

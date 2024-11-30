@@ -65,9 +65,9 @@ include-package-data = true
 [tool.pyright]
 include = [
     "discord_tools",
-    "discord_tools.ipc",
-    "discord_tools.app_commands",
-    "discord_tools.app_commands.i18n",
+    "discord_tools/ipc",
+    "discord_tools/app_commands",
+    "discord_tools/app_commands/i18n",
 ]
 exclude = [
     "**/__pycache__",

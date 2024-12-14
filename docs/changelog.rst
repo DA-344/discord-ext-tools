@@ -1,5 +1,8 @@
 .. currentmodule:: discord_tools
 
+.. _Keep a Changelog: https://keepachangelog.com/en/1.1.0/
+.. _Semantic Versioning: https://semver.org/spec/v2.0.0.html
+
 .. _changelog:
 
 Changelog
@@ -7,8 +10,8 @@ Changelog
 
 All the changes of this project will be registered here.
 
-This format is based on `Keep A Changelog <https://keepachangelog.com/en/1.1.0/>` and this project adheres to
-`Semantic Versioning <https://semver.org/spec/v2.0.0.html>`.
+This format is based on `Keep A Changelog`_ and this project adheres to
+`Semantic Versioning`_.
 
 
 Unreleased
@@ -45,4 +48,4 @@ Changed
 Removed
 ~~~~~~~
 
-- Removed :class:`~discord_tools.app_commands.i18n.Client`.
+- Removed ``discord_tools.app_commands.i18n.Client``.

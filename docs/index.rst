@@ -10,6 +10,7 @@ Manuals
 .. toctree::
     :maxdepth: 1
 
+    changelog
     api/index
     interactions/index
     ipc/index

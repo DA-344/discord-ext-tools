@@ -39,6 +39,7 @@ Added
     - Added :class:`~discord_tools.ipc.ClientSession`.
     - Added :func:`~discord_tools.ipc.route`.
 - Added various new methods to :class:`~discord_tools.app_commands.i18n.Translator`.
+- Added new :class:`~discord_tools.app_commands.Greedy` transformer.
 
 Changed
 ~~~~~~~

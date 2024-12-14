@@ -13,4 +13,5 @@ This section outlines all the available tools for interaction based commands (ap
     errors
     enums
     data_classes
+    transformers
     i18n

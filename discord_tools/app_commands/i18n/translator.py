@@ -204,12 +204,15 @@ class Translator(BaseTranslator):
                 )
 
         if strategy == "json":
-            import json
+            try:
+                import orjson as json  # pyright: ignore[reportMissingModuleSource]
+            except ImportError:
+                import json
 
             load = json.loads
         elif strategy in ("yaml", "yml"):
             try:
-                import yaml
+                import yaml  # pyright: ignore[reportMissingModuleSource]
             except ImportError:
                 raise ValueError(
                     "Cannot translate y(a)ml files because the requirements are not installed,"
@@ -223,7 +226,7 @@ class Translator(BaseTranslator):
                     "locale is a required parameter if strategy is po or mo"
                 )
             try:
-                import polib
+                import polib  # pyright: ignore[reportMissingModuleSource]
             except ImportError:
                 raise ValueError(
                     "Cannot translate po files because the requirements are not installed,"
@@ -267,7 +270,7 @@ class Translator(BaseTranslator):
 
     def _save_po_data(self, data, locale: Locale) -> dict[Locale, dict[str, str]]:  # type: ignore
         if TYPE_CHECKING:
-            import polib
+            import polib  # pyright: ignore[reportMissingModuleSource]
 
             data: polib.POFile | polib.MOFile
 

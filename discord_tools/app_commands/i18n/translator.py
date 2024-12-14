@@ -205,7 +205,7 @@ class Translator(BaseTranslator):
 
         if strategy == "json":
             try:
-                import orjson as json  # pyright: ignore[reportMissingModuleSource]
+                import orjson as json  # pyright: ignore[reportMissingImports]
             except ImportError:
                 import json
 

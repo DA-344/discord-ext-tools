@@ -14,10 +14,8 @@ This format is based on `Keep A Changelog`_ and this project adheres to
 `Semantic Versioning`_.
 
 
-Unreleased
-----------
-
-This changes are available on the ``master`` branch, without any guarantee on functionality and stability.
+Version 1.0.0
+--------------
 
 .. warning::
 

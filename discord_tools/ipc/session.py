@@ -45,6 +45,8 @@ __slots__ = ("ServerSession",)
 class ClientSession:
     """A simple wrapper around an :class:`~aiohttp.ClientSession` for easy handling with an IPC server.
 
+    .. versionadded:: 1.0
+
     .. container:: operations
 
         .. describe:: async with x

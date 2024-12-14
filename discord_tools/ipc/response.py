@@ -38,6 +38,8 @@ __all__ = ("Request",)
 class Request:
     """Represents an IPC request.
 
+    .. versionadded:: 1.0
+
     .. container:: operations
 
         .. describe:: for ... in x

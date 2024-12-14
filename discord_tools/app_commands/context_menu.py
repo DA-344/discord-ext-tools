@@ -49,6 +49,8 @@ __all__ = ("CogContextMenuHolder",)
 class CogContextMenuHolder(Generic[CogT]):
     """Represents a :class:`discord.ext.commands.Cog` or :class:`discord.ext.commands.GroupCog` context menu holder.
 
+    .. versionadded:: 1.0
+
     Parameters
     ----------
     cog: Union[:class:`discord.ext.commands.Cog`, :class:`discord.ext.commands.GroupCog`]

@@ -51,6 +51,11 @@ speed = [
     "aiodns>=1.1; sys_platform != 'win32'",
     "Brotli",
     "cchardet==2.1.7; python_version < '3.10'",
+    "discord.py[speed]",
+]
+voice = [
+    "discord.py[voice]",
+    "libnacl==1.6.0",
 ]
 
 [tool.setuptools]

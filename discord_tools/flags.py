@@ -62,6 +62,8 @@ class Flag(BaseFlag):
     objects, but it is not necessary to do so. These cannot be constructed
     manually.
 
+    .. versionadded:: 1.0
+
     Attributes
     ----------
     name: :class:`str`
@@ -121,6 +123,8 @@ def flag(
     """Override default functionality and parameters of the underlying :class:`FlagConverter`
     class attributes.
 
+    .. versionadded:: 1.0
+
     Parameters
     ------------
     name: :class:`str`
@@ -179,6 +183,8 @@ def flag(
 
 class ImplicitBoolFlagConverter(FlagConverter):
     """A custom :class:`discord.ext.commands.FlagConverter` subclass that allows boolean flags to not have a value.
+
+    .. versionadded:: 1.0
 
     For example:
 

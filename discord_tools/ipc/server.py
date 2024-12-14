@@ -50,6 +50,8 @@ __all__ = (
 def route(name: str = MISSING):
     """A decorator that registers a coroutine as a server route.
 
+    .. versionadded:: 1.0
+
     Parameters
     ----------
     name: :class:`str`
@@ -69,6 +71,8 @@ def route(name: str = MISSING):
 
 class Server(Generic[CT]):
     """The server used for the IPC.
+
+    .. versionadded:: 1.0
 
     Parameters
     ----------

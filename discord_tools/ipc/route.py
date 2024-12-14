@@ -39,6 +39,8 @@ __all__ = ("Route",)
 class Route(Generic[R]):
     """Represents a server route.
 
+    .. versionadded:: 1.0
+
     .. container:: operations
 
         .. describe:: str(x)

@@ -51,7 +51,12 @@ class Translator(BaseTranslator):
 
     These translations are all merged, so unique translation keys are recommended.
 
-    Examples can be found in the :resource:`repository <examples>`.
+    Examples can be found on the :resource:`repository <examples>`.
+
+    .. versionchanged:: 1.0
+
+        This is now a subclass of :class:`~discord.app_commands.Translator` and does not require
+        the ``googletrans`` module.
     """
 
     def __init__(self) -> None:
@@ -60,13 +65,18 @@ class Translator(BaseTranslator):
         self._translations: dict[Locale, dict[str, str]] = {}
 
     def clear_translations(self) -> None:
-        """Clears all the translations."""
+        """Clears all the translations.
+
+        .. versionadded:: 1.0
+        """
         self._translations.clear()
 
     def update_translation(
         self, locale: Locale, data: dict[str, str]
     ) -> dict[Locale, dict[str, str]]:
         """Updates a locale's translation strings.
+
+        .. versionadded:: 1.0
 
         Parameters
         ----------
@@ -95,6 +105,8 @@ class Translator(BaseTranslator):
     def delete_translation(self, locale: Locale) -> None:
         """Deletes a locale's translation strings.
 
+        .. versionadded:: 1.0
+
         .. note::
 
             Note that this **removes** it from the cache and **does not clear** the strings.
@@ -113,6 +125,8 @@ class Translator(BaseTranslator):
 
     def clear_translation(self, locale: Locale) -> None:
         """Clears a locale's translation strings.
+
+        .. versionadded:: 1.0
 
         .. note::
 
@@ -137,6 +151,8 @@ class Translator(BaseTranslator):
         For updating translations use :meth:`.update_translation`, for deleting translation
         use :meth:`.delete_translation`, and for clearing them use :meth:`.clear_translations`.
 
+        .. versionadded:: 1.0
+
         Raises
         ------
         KeyError
@@ -159,6 +175,8 @@ class Translator(BaseTranslator):
 
         As this function could take a lot of time and block the event loop, it is recommended to
         call this function once and before starting any Async I/O operations.
+
+        .. versionadded:: 1.0
 
         Parameters
         ----------
@@ -275,6 +293,32 @@ class Translator(BaseTranslator):
     async def translate(
         self, string: locale_str, locale: Locale, context: TranslationContext
     ) -> str | None:
+        """Translates ``string`` into ``locale`` with the provided ``context``.
+
+        .. versionchanged:: 1.0
+
+            This now takes ``locale`` and ``context`` so it is fully compatible with ``discord.py`` when setting
+            this translator as the :attr:`~discord.app_commands.CommandTree.translator`.
+
+        Parameters
+        ----------
+        string: :class:`~discord.app_commands.locale_str`
+            The string to translate.
+        locale: :class:`~discord.Locale`
+            The locale to translate the string to.
+
+            .. versionadded:: 1.0
+        context: :class:`~discord.app_commands.TranslationContext`
+            The translation context.
+
+            .. versionadded:: 1.0
+
+        Returns
+        -------
+        Optional[:class:`str`]
+            The translated string, or ``None`` if it could not be translated. This is handled by the library
+            when the translator is set as the :attr:`~discord.app_commands.CommandTree.translator`.
+        """
         translations = self._translations.get(locale)
         if translations is None:
             return None  # discord.py handles this

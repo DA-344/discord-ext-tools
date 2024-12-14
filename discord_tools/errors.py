@@ -145,6 +145,8 @@ class NoVoiceState(CheckFailure):
 class StringDoesNotMatch(ConversionError):
     """An exception raised when the :class:`RegexConverter` fails to find an occurrence in a string.
 
+    .. versionadded:: 1.0
+
     Attributes
     ----------
     pattern: :class:`re.Pattern`

@@ -42,6 +42,8 @@ __all__ = ("RegexConverter",)
 class RegexConverter(Converter[re.Match[str]]):
     """A converter that finds a regex on an argument.
 
+    .. versionadded:: 1.0
+
     This converter can be used as it follows:
 
     .. code-block:: python3

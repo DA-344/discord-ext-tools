@@ -132,6 +132,10 @@ class CogContextMenuHolder(Generic[CogT]):
                 )
                 self._context_menus.append(ret)
 
+                # this updates the cog attribute, so it is now a ContextMenu
+                # object instead of leaving it as a function
+                setattr(self.cog, attr, ret)
+
     def _get_cog_client(self) -> Optional[Bot]:
         if hasattr(self.cog, "bot"):
             return self.cog.bot  # type: ignore

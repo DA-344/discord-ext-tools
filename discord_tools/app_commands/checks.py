@@ -28,6 +28,7 @@ from typing import Any
 
 from discord import Interaction
 from discord.abc import Snowflake
+from discord.app_commands import Command, Group
 from discord.app_commands.commands import check
 
 from .errors import MissingSKU
@@ -97,13 +98,25 @@ def max_concurrency(number: int, per: BucketType = BucketType.default):
         it to be used up to ``number`` times per guild.
     """
 
-    obj = MaxConcurrency(number, per=per)
+    def decorator(func):
+        async def predicate(interaction: Interaction[Any]) -> bool:
+            if interaction.command is None:
+                obj = getattr(func, '__discord_app_commands_max_concurrency__', None)
+            else:
+                obj = interaction.command.extras.get('__max_concurrency__')
 
-    async def predicate(interaction: Interaction[Any]) -> bool:
-        await obj.acquire(interaction)
-        await obj.release(interaction)
-        # If it does not error in obj.acquire then it has not reached the
-        # max concurrency yet. So return a True.
-        return True
+            if not isinstance(obj, MaxConcurrency):
+                return True
 
-    return check(predicate)
+            await obj.acquire(interaction)
+            await obj.release(interaction)
+            # If it does not error in obj.acquire then it has not reached the
+            # max concurrency yet. So return a True.
+            return True
+
+        if isinstance(func, (Command, Group)):
+            func.extras["__max_concurrency__"] = MaxConcurrency(number, per=per)
+        else:
+            func.__discord_app_commands_max_concurrency__ = MaxConcurrency(number, per=per)
+        return check(predicate)(func)
+    return decorator

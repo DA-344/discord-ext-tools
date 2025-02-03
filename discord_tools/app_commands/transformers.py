@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 from __future__ import annotations
 
 from functools import partial
-from typing import TypeVar, Generic, Any
+from typing import TypeVar, Any
 
 import discord
 from discord.app_commands import Transformer
@@ -52,16 +52,17 @@ class Greedy(Transformer):
     .. versionadded:: 1.0
     """
 
-    def __init__(self, converter: T) -> None:  # pyright: ignore[reportInvalidTypeVarUse]
+    def __init__(
+        self,
+        converter: T,  # pyright: ignore[reportInvalidTypeVarUse]
+    ) -> None:
         if converter not in CONVERTER_MAPPING and not is_generic_type(converter):
             raise ValueError(
                 f"Cannot set the Greedy converter to {converter.__class__.__name__}"
             )
         self._converter: T = converter
 
-    async def transform(
-        self, interaction: discord.Interaction, argument: str
-    ) -> Any:
+    async def transform(self, interaction: discord.Interaction, argument: str) -> Any:
         ctx = await Context.from_interaction(interaction)  # type: ignore
         assert ctx.current_parameter is not None
         view = ctx.view.__class__(argument)

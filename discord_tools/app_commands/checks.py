@@ -101,9 +101,9 @@ def max_concurrency(number: int, per: BucketType = BucketType.default):
     def decorator(func):
         async def predicate(interaction: Interaction[Any]) -> bool:
             if interaction.command is None:
-                obj = getattr(func, '__discord_app_commands_max_concurrency__', None)
+                obj = getattr(func, "__discord_app_commands_max_concurrency__", None)
             else:
-                obj = interaction.command.extras.get('__max_concurrency__')
+                obj = interaction.command.extras.get("__max_concurrency__")
 
             if not isinstance(obj, MaxConcurrency):
                 return True
@@ -117,6 +117,9 @@ def max_concurrency(number: int, per: BucketType = BucketType.default):
         if isinstance(func, (Command, Group)):
             func.extras["__max_concurrency__"] = MaxConcurrency(number, per=per)
         else:
-            func.__discord_app_commands_max_concurrency__ = MaxConcurrency(number, per=per)
+            func.__discord_app_commands_max_concurrency__ = MaxConcurrency(
+                number, per=per
+            )
         return check(predicate)(func)
+
     return decorator

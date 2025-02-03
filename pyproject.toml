@@ -29,8 +29,13 @@ dynamic = ["version", "dependencies"]
 po-i18n = [
     "polib==1.2.0",
 ]
+# deprecated on version 1.1.0, pending removal on 2.0.0
+# use "yaml" optional dependency instead.
 yaml-i18n = [
-    "pyyaml<7.0.0",
+    "discord.py-tools[yaml]",
+]
+yaml = [
+    "pyyaml<7.0.0"
 ]
 docs = [
     "sphinx==8.0.2",

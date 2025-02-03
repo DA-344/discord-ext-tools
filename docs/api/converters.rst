@@ -24,6 +24,7 @@ Flag
 .. attributetable:: Flag
 
 .. autoclass:: Flag()
+    :members:
 
 ImplicitBoolFlagConverter
 ~~~~~~~~~~~~~~~~~~~~~~~~~

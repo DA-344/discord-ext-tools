@@ -34,6 +34,8 @@ autosectionlabel_prefix_document = True
 
 autodoc_member_order = "bysource"
 autodoc_typehints = "none"
+autodoc_typehints_format = "short"
+autodoc_typehints_description_target = "all"
 
 extlinks = {
     "issue": ("https://github.com/DA-344/discord-ext-tools/issues/%s", "GH-%s"),

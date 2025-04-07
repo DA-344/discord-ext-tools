@@ -166,6 +166,7 @@ class StringDoesNotMatch(ConversionError):
             ValueError(f"{argument!r} did not match {self.pattern!r}.", *args),
         )
 
+
 class ItemOnCooldown(AppCheckFailure):
     """Exception raised when an item is interacted with but was on cooldown.
 
@@ -174,5 +175,5 @@ class ItemOnCooldown(AppCheckFailure):
 
     def __init__(self, item: Item, cooldown: Cooldown) -> None:
         super().__init__(
-            f'Item {item} is on cooldown. Retry in {cooldown.get_retry_after()}s'
+            f"Item {item} is on cooldown. Retry in {cooldown.get_retry_after()}s"
         )

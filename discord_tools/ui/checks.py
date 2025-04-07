@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Callable, Hashable
@@ -40,8 +41,8 @@ if TYPE_CHECKING:
     Check = Callable[[Interaction[ClientT], Item[Any]], Any]
 
 __all__ = (
-    'check',
-    'cooldown',
+    "check",
+    "cooldown",
 )
 
 
@@ -58,12 +59,14 @@ class _callback:
     def __discord_ui_model_kwargs__(self) -> dict[str, Any]:
         return self.callback.__discord_ui_model_kwargs__
 
-    async def _run_checks(self, interaction: Interaction[ClientT], item: Item[Any]) -> None:
+    async def _run_checks(
+        self, interaction: Interaction[ClientT], item: Item[Any]
+    ) -> None:
         for check in self.checks:
             ret = await maybe_coroutine(check, interaction, item)
 
             if not ret:
-                raise app_commands.CheckFailure('You are not allowed to use this item.')
+                raise app_commands.CheckFailure("You are not allowed to use this item.")
 
     async def _callback(self, view, interaction, item) -> Any:
         await self._run_checks(interaction, item)
@@ -148,15 +151,20 @@ def cooldown(
     """
 
     async def pred(interaction: Interaction, item: Item) -> bool:
-        cd_map: commands.CooldownMapping[Interaction] = getattr(pred, '__discord_ui_checks_cooldown__', MISSING)
+        cd_map: commands.CooldownMapping[Interaction] = getattr(
+            pred, "__discord_ui_checks_cooldown__", MISSING
+        )
 
         if cd_map is MISSING:
-            cd_map = commands.CooldownMapping.from_cooldown(rate, per, key or (lambda i: None))
-            setattr(pred, '__discord_ui_checks_cooldown__', cd_map)
+            cd_map = commands.CooldownMapping.from_cooldown(
+                rate, per, key or (lambda i: None)
+            )
+            setattr(pred, "__discord_ui_checks_cooldown__", cd_map)
 
         retry_after = cd_map.update_rate_limit(interaction)
 
         if retry_after:
             raise ItemOnCooldown(item, cd_map._cooldown or commands.Cooldown(rate, per))
         return True
+
     return check(pred)

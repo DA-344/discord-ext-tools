@@ -28,8 +28,10 @@ import re
 from typing import Any, TYPE_CHECKING
 
 from discord import Guild, Member
+from discord.ui import Item
 from discord.utils import _human_join as human_join
 from discord.ext.commands import CheckFailure, Command, Context, ConversionError
+from discord.app_commands import CheckFailure as AppCheckFailure, Cooldown
 
 if TYPE_CHECKING:
     from .converters import RegexConverter
@@ -41,6 +43,7 @@ __all__ = (
     "MissingAttachments",
     "NoVoiceState",
     "StringDoesNotMatch",
+    "ItemOnCooldown",
 )
 
 
@@ -161,4 +164,15 @@ class StringDoesNotMatch(ConversionError):
         super().__init__(
             converter,
             ValueError(f"{argument!r} did not match {self.pattern!r}.", *args),
+        )
+
+class ItemOnCooldown(AppCheckFailure):
+    """Exception raised when an item is interacted with but was on cooldown.
+
+    This inherits from :exc:`discord.app_commands.CheckFailure`.
+    """
+
+    def __init__(self, item: Item, cooldown: Cooldown) -> None:
+        super().__init__(
+            f'Item {item} is on cooldown. Retry in {cooldown.get_retry_after()}s'
         )

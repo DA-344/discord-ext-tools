@@ -66,6 +66,7 @@ voice = [
 [tool.setuptools]
 packages = [
     "discord_tools",
+    "discord_tools.ui",
     "discord_tools.ipc",
     "discord_tools.app_commands",
     "discord_tools.app_commands.i18n",
